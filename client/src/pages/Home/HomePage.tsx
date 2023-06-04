@@ -1,7 +1,7 @@
 import { Box, HStack, Image } from "@chakra-ui/react";
 import MainContainer from "../../components/MainContainer/MainContainer";
 import Welcome from "../../components/Welcome/Welcome";
-import vector from "../../assets/images/vector.png";
+import vector from "../../assets/images/vector.png"
 const HomePage = () => {
   return (
     <MainContainer>

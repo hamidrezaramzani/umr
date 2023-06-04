@@ -7,3 +7,7 @@
   font-family: "iran-yekan-bold";
   src: url(../assets/fonts/IRANYekanXFaNum-Bold.ttf);
 }
+
+.iran-yekan-regular {
+  font-family: iran-yekan-regular !important;
+}
