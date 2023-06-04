@@ -17,7 +17,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { convertPersianNumberToEnglishNumber } from "../../../helpers/convertPersianNumberToEnglishNumber";
 import FormErrorMessage from "../../../components/FormErrorMessage/FormErrorMessage";
 import { toast } from "react-toastify";
-import { addStudentRequest } from "../../../api/addStudent/addStudent";
+import { addStudentRequest } from "../../../api/students/students";
 import { useNavigate } from "react-router";
 export interface AddStudentFormValues {
   fullName: string;
@@ -71,7 +71,7 @@ const AddStudentPage = () => {
     }
   };
   return (
-    <AdminDashboardContainer>
+    <AdminDashboardContainer title="اضافه کردن دانشجوی جدید">
       <form onSubmit={handleSubmit(handleSubmitForm)}>
         <FormControl mt="3" mb="3">
           <FormLabel>{wordBook.fields.addStudent.fullName.fa}</FormLabel>

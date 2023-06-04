@@ -13,6 +13,16 @@ const addStudent = async (req, res) => {
   }
 };
 
+const allStudents = async (req, res) => {
+  try {
+    const students = await Student.find({});
+    return res.status(200).json(students);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
 module.exports = {
   addStudent,
+  allStudents,
 };

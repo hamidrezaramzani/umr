@@ -4,3 +4,7 @@ import client from "../client";
 export const addStudentRequest = async (data: AddStudentFormValues) => {
     return await client.post("/student/add", data);
 };
+
+export const getStudentsRequest = async <T>() => {
+    return await client.get<T>("/student/all");
+};

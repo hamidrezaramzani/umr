@@ -5,9 +5,11 @@ import Sidebar from "../Sidebar/Sidebar";
 
 interface AdminDashboardContainerProps {
   children: ReactNode;
+  title: string;
 }
 const AdminDashboardContainer = ({
   children,
+  title,
 }: AdminDashboardContainerProps) => {
   return (
     <MainContainer>
@@ -16,7 +18,7 @@ const AdminDashboardContainer = ({
           <Sidebar />
           <Box width="80%" px="10">
             <Box width="full" mb="5">
-              <Heading fontSize="lg">اضافه کردن دانشجوی جدید</Heading>
+              <Heading fontSize="lg">{title}</Heading>
             </Box>
             {children}
           </Box>
