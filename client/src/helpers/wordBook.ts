@@ -6,8 +6,26 @@ export const wordBook = {
                 fa: "شماره دانشجویی"
             },
             password: {
-                en: "Password", 
+                en: "Password",
                 fa: "رمز عبور"
+            }
+        },
+        addStudent: {
+            fullName: {
+                fa: "نام و نام خانوادگی",
+                en: "Full name"
+            },
+            meliCode: {
+                fa: "کد ملی",
+                en: "Meli code"
+            },
+            studentNumber: {
+                fa: "شماره دانشجویی",
+                en: "Student Number"
+            },
+            birthday: {
+                fa: "تاریخ تولد",
+                en: "Birthday"
             }
         }
     },

@@ -1,6 +1,8 @@
 import { RouteObject } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
-const publicRoutes: RouteObject[] = [
+import AddStudentPage from "../pages/Admin/AddStudent/AddStudentPage";
+import Dashboard from "../pages/Admin/Dashboard/Dashboard";
+const protectedRoutes: RouteObject[] = [
   {
     path: "/admin",
     children: [
@@ -8,7 +10,16 @@ const publicRoutes: RouteObject[] = [
         path: "dashboard",
         element: (
           <ProtectedRoute type="admin">
-            <h1>admin Route</h1>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+
+      {
+        path: "add-student",
+        element: (
+          <ProtectedRoute type="admin">
+            <AddStudentPage />
           </ProtectedRoute>
         ),
       },
@@ -16,4 +27,4 @@ const publicRoutes: RouteObject[] = [
   },
 ];
 
-export default publicRoutes;
+export default protectedRoutes;
