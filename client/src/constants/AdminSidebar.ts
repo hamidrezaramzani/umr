@@ -22,6 +22,21 @@ export const adminSidebarItems: AdminSidebarProps[] = [
                 name: "manage-student"
             },
         ]
+    },
+    {
+        title: "غذا",
+        childrens: [
+            {
+                title: "اضافه کردن غذای جدید",
+                link: "/admin/add-meal",
+                name: "add-meal"
+            },
+            {
+                title: "مدیریت غذاها",
+                link: "/admin/manage-meals",
+                name: "manage-meals"
+            },
+        ]
     }
 ]
 

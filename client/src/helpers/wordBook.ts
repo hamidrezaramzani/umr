@@ -27,6 +27,20 @@ export const wordBook = {
                 fa: "تاریخ تولد",
                 en: "Birthday"
             }
+        },
+        addMeal: {
+            name: {
+                fa: "نام غذا",
+                en: "Meal Name"
+            },
+            image: {
+                fa: "تصویر غذا",
+                en: "Meal Image"
+            },
+            price: {
+                fa: "قیمت غذا",
+                en: "Meal Price"
+            }
         }
     },
     messages: {
