@@ -4,6 +4,7 @@ import StudentFormPage from "../pages/Admin/StudentFormPage/StudentFormPage";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import ManageStudentsPage from "../pages/Admin/ManageStudents/ManageStudentsPage";
 import MealFormPage from "../pages/Admin/MealFormPage/MealFormPage";
+import ManageMealsPage from "../pages/Admin/ManageMeals/ManageMealsPage";
 const protectedRoutes: RouteObject[] = [
   {
     path: "/admin",
@@ -48,6 +49,14 @@ const protectedRoutes: RouteObject[] = [
         element: (
           <ProtectedRoute type="admin">
             <MealFormPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "manage-meals",
+        element: (
+          <ProtectedRoute type="admin">
+            <ManageMealsPage />
           </ProtectedRoute>
         ),
       },
