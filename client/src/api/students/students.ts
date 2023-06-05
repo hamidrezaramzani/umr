@@ -8,3 +8,9 @@ export const addStudentRequest = async (data: AddStudentFormValues) => {
 export const getStudentsRequest = async <T>() => {
     return await client.get<T>("/student/all");
 };
+
+
+export const deleteStudentRequest = async (id: string) => {
+    return await client.delete(`/student/delete/${id}`);
+};
+

@@ -19,6 +19,7 @@ import FormErrorMessage from "../../../components/FormErrorMessage/FormErrorMess
 import { toast } from "react-toastify";
 import { addStudentRequest } from "../../../api/students/students";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 export interface AddStudentFormValues {
   fullName: string;
   meliCode: string;
@@ -26,6 +27,7 @@ export interface AddStudentFormValues {
   birthday: string;
 }
 const AddStudentPage = () => {
+  const [loading, setLoading] = useState(false);
   const schema = Yup.object().shape({
     fullName: Yup.string().required(
       wordBook.format(
@@ -63,10 +65,13 @@ const AddStudentPage = () => {
   const navigate = useNavigate();
   const handleSubmitForm = async (values: AddStudentFormValues) => {
     try {
+      setLoading(true);
       await addStudentRequest(values);
       toast.success("اضافه کردن دانشجو با موفقیت انجام شد");
       navigate("/admin/manage-student");
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.error("خطایی هنگام ورود به حساب رخ داده است. مجدد گزارش دهید");
     }
   };
@@ -124,7 +129,12 @@ const AddStudentPage = () => {
           <FormErrorMessage>{errors.birthday?.message}</FormErrorMessage>
         </FormControl>
 
-        <Button type="submit" colorScheme="blue" width="full">
+        <Button
+          type="submit"
+          colorScheme="blue"
+          isLoading={loading}
+          width="full"
+        >
           ثبت
         </Button>
       </form>
