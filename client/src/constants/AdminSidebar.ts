@@ -2,6 +2,7 @@ import { IconType } from "react-icons";
 import { AiOutlineUserAdd, AiOutlineUser } from "react-icons/ai"
 import { MdOutlineFastfood } from "react-icons/md";
 import { BiFoodMenu } from "react-icons/bi";
+import { RiReservedLine, RiUser2Fill } from "react-icons/ri";
 export interface AdminSidebarProps {
     title: string;
     childrens: {
@@ -63,6 +64,40 @@ export const adminSidebarItems: AdminSidebarProps[] = [
                 Icon: BiFoodMenu
             },
         ]
-    }
+    },
+    {
+        title: "منو",
+        childrens: [
+            {
+                title: "ویرایش منو",
+                link: "/admin/edit-menu",
+                name: "edit-menu",
+                Icon: RiReservedLine
+            },
+            {
+                title: "مشاهده منو",
+                link: "/admin/manage-menu",
+                name: "manage-menu",
+                Icon: RiReservedLine
+            },
+        ]
+    },
+    {
+        title: "حساب",
+        childrens: [
+            {
+                title: "تنظیمات",
+                link: "/admin/settings",
+                name: "settings",
+                Icon: RiUser2Fill
+            },
+            {
+                title: "خروج",
+                link: "/logout",
+                name: "manage-menu",
+                Icon: RiUser2Fill
+            },
+        ]
+    },
 ]
 

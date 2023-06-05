@@ -7,6 +7,7 @@ import MealFormPage from "../pages/Admin/MealFormPage/MealFormPage";
 import ManageMealsPage from "../pages/Admin/ManageMeals/ManageMealsPage";
 import MealTimeFormPage from "../pages/Admin/MealTimeFormPage/MealTimeFormPage";
 import ManageMealTimes from "../pages/Admin/ManageMealTimes/ManageMealTimesForm";
+import Logout from "../components/Logout/Logout";
 const protectedRoutes: RouteObject[] = [
   {
     path: "/admin",
@@ -96,6 +97,10 @@ const protectedRoutes: RouteObject[] = [
         ),
       },
     ],
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
   },
 ];
 

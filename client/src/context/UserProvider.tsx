@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, useState } from "react";
 
 interface UserInfo {
@@ -6,19 +7,20 @@ interface UserInfo {
   type: string;
 }
 type User = {
-  user: UserInfo;
+  user: UserInfo | null;
   isLogged: boolean;
 };
 
 type UserContextType = {
   user: User | null;
   login: (user: UserInfo) => void;
+  logout: () => void;
 };
 
 export const UserContext = createContext<UserContextType>({
   user: null,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   login: () => {},
+  logout: () => {},
 });
 
 type UserProviderProps = {
@@ -42,8 +44,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       user,
     });
   };
+
+  const logout = () => {
+    localStorage.removeItem("umr-user");
+    setUser({
+      isLogged: false,
+      user: null,
+    });
+  };
   return (
-    <UserContext.Provider value={{ user, login }}>
+    <UserContext.Provider value={{ user, login, logout }}>
       {children}
     </UserContext.Provider>
   );

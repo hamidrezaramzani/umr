@@ -14,7 +14,7 @@ const ProtectedRoute = ({ type, children }: ProtectedRouteProps) => {
     return <></>;
   }
 
-  if (user.user.type !== type) {
+  if (user.user?.type !== type) {
     navigate("/auth/login");
     return <></>;
   }
