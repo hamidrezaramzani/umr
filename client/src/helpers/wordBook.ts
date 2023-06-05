@@ -41,6 +41,12 @@ export const wordBook = {
                 fa: "قیمت غذا",
                 en: "Meal Price"
             }
+        },
+        addMealTime: {
+            title: {
+                fa: "عنوان",
+                en: "Title"
+            }
         }
     },
     messages: {

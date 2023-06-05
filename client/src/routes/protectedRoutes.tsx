@@ -5,6 +5,8 @@ import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import ManageStudentsPage from "../pages/Admin/ManageStudents/ManageStudentsPage";
 import MealFormPage from "../pages/Admin/MealFormPage/MealFormPage";
 import ManageMealsPage from "../pages/Admin/ManageMeals/ManageMealsPage";
+import MealTimeFormPage from "../pages/Admin/MealTimeFormPage/MealTimeFormPage";
+import ManageMealTimes from "../pages/Admin/ManageMealTimes/ManageMealTimesForm";
 const protectedRoutes: RouteObject[] = [
   {
     path: "/admin",
@@ -65,6 +67,31 @@ const protectedRoutes: RouteObject[] = [
         element: (
           <ProtectedRoute type="admin">
             <MealFormPage />
+          </ProtectedRoute>
+        ),
+      },
+
+      {
+        path: "add-mealTime",
+        element: (
+          <ProtectedRoute type="admin">
+            <MealTimeFormPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "manage-mealTimes",
+        element: (
+          <ProtectedRoute type="admin">
+            <ManageMealTimes />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "edit-mealTime/:mealTimeId?",
+        element: (
+          <ProtectedRoute type="admin">
+            <MealTimeFormPage />
           </ProtectedRoute>
         ),
       },

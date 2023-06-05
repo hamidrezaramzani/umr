@@ -9,6 +9,7 @@ const studentRoutes = require("./routes/student");
 const mealRoutes = require("./routes/meal");
 const fileUpload = require("express-fileupload");
 const path = require("path");
+const mealTimeRoutes = require("./routes/mealTime");
 const start = () => {
   const app = express();
   const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ const start = () => {
   app.use("/api/v1/auth", authRoutes);
   app.use("/api/v1/student", studentRoutes);
   app.use("/api/v1/meal", mealRoutes);
+  app.use("/api/v1/mealTime", mealTimeRoutes);
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
     console.log("Server running at port ", PORT);
