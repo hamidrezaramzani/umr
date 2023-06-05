@@ -17,9 +17,13 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { convertPersianNumberToEnglishNumber } from "../../../helpers/convertPersianNumberToEnglishNumber";
 import FormErrorMessage from "../../../components/FormErrorMessage/FormErrorMessage";
 import { toast } from "react-toastify";
-import { addStudentRequest } from "../../../api/students/students";
-import { useNavigate } from "react-router";
-import { useState } from "react";
+import {
+  addStudentRequest,
+  editStudentRequest,
+  fetchSingleStudentRequest,
+} from "../../../api/students/students";
+import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
 export interface AddStudentFormValues {
   fullName: string;
   meliCode: string;
@@ -27,6 +31,7 @@ export interface AddStudentFormValues {
   birthday: string;
 }
 const AddStudentPage = () => {
+  const { userId } = useParams();
   const [loading, setLoading] = useState(false);
   const schema = Yup.object().shape({
     fullName: Yup.string().required(
@@ -61,22 +66,54 @@ const AddStudentPage = () => {
     setValue,
   } = useForm<AddStudentFormValues>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      studentNumber: "",
+      meliCode: "",
+      fullName: "",
+      birthday: "",
+    },
   });
+  useEffect(() => {
+    const fetchSingleStudent = async () => {
+      try {
+        const {
+          data: { studentNumber, meliCode, fullName, birthday },
+        } = await fetchSingleStudentRequest(userId);
+        setValue("birthday", birthday);
+        setValue("meliCode", meliCode);
+        setValue("studentNumber", studentNumber);
+        setValue("fullName", fullName);
+      } catch (error) {
+        toast.error("خطایی پیش آمده است مجدد دوباره امتحان کنید");
+      }
+    };
+
+    if (userId) {
+      fetchSingleStudent();
+    }
+  }, [userId]);
   const navigate = useNavigate();
   const handleSubmitForm = async (values: AddStudentFormValues) => {
     try {
       setLoading(true);
-      await addStudentRequest(values);
-      toast.success("اضافه کردن دانشجو با موفقیت انجام شد");
+      if (!userId) {
+        await addStudentRequest(values);
+        toast.success("اضافه کردن دانشجو با موفقیت انجام شد");
+      } else {
+        await editStudentRequest(values, userId);
+        toast.success("ویرایش دانشجو با موفقیت انجام شد");
+      }
       navigate("/admin/manage-student");
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      toast.error("خطایی هنگام ورود به حساب رخ داده است. مجدد گزارش دهید");
+      toast.error("خطایی هنگام ویرایش دانشجو رخ داده است. مجدد گزارش دهید");
     }
   };
   return (
-    <AdminDashboardContainer title="اضافه کردن دانشجوی جدید">
+    <AdminDashboardContainer
+      title={userId ? "ویرایش دانشجو" : "اضافه کردن دانشجوی جدید"}
+    >
       <form onSubmit={handleSubmit(handleSubmitForm)}>
         <FormControl mt="3" mb="3">
           <FormLabel>{wordBook.fields.addStudent.fullName.fa}</FormLabel>
@@ -135,7 +172,7 @@ const AddStudentPage = () => {
           isLoading={loading}
           width="full"
         >
-          ثبت
+          {userId ? "ویرایش" : "ثبت"}
         </Button>
       </form>
     </AdminDashboardContainer>

@@ -21,6 +21,7 @@ import AdminDashboardContainer from "../../../components/Admin/AdminDashboardCon
 import { HiOutlineTrash } from "react-icons/hi";
 import { FiEdit } from "react-icons/fi";
 import ConfirmModal from "../../../components/ConfirmModal/ConfirmModal";
+import { useNavigate } from "react-router";
 export interface IStudent {
   _id: string;
   fullName: string;
@@ -34,6 +35,7 @@ const ManageStudentsPage = () => {
   const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [id, setId] = useState<string>("");
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -68,6 +70,10 @@ const ManageStudentsPage = () => {
       toast.error("خطایی پیش آمده. لطفا بعدا مجدد امتحان کنید");
     }
     console.log(id);
+  };
+
+  const handleEditStudent = (id: string) => {
+    navigate(`/admin/edit-student/${id}`);
   };
   return (
     <AdminDashboardContainer title="مدیریت دانشجوها">
@@ -120,7 +126,13 @@ const ManageStudentsPage = () => {
                       <HiOutlineTrash fontSize="17" />
                     </Button>
                     &nbsp;&nbsp;
-                    <Button size="sm" colorScheme="yellow">
+                    <Button
+                      size="sm"
+                      colorScheme="yellow"
+                      onClick={() => {
+                        handleEditStudent(student._id);
+                      }}
+                    >
                       <FiEdit fontSize="17" />
                     </Button>
                   </Td>
