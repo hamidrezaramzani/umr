@@ -1,4 +1,11 @@
-import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Image,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import AdminDashboardContainer from "../../../components/Admin/AdminDashboardContainer/AdminDashboardContainer";
@@ -8,20 +15,27 @@ import { wordBook } from "../../../helpers/wordBook";
 import FormErrorMessage from "../../../components/FormErrorMessage/FormErrorMessage";
 import { SUPPORTED_IMAGES } from "../../../constants/general";
 import { toast } from "react-toastify";
-import { addMealRequest } from "../../../api/meals/meals";
-import { useState } from "react";
+import {
+  addMealRequest,
+  editMealRequest,
+  getSingleMealRequest,
+} from "../../../api/meals/meals";
+import { useEffect, useState } from "react";
+import { getImageAddress } from "../../../helpers/getImageAddress";
 export interface MealFormValues {
   name: string;
-  image: FileList;
+  image: FileList | null;
   price: string;
 }
 const MealFormPage = () => {
   const { mealId } = useParams();
+  const [image, setImage] = useState<string>("");
   const navigate = useNavigate();
   const schema = Yup.object().shape({
     image: Yup.mixed()
+      .nullable()
       .test("fileType", "", function (value: any) {
-        if (!value.length) {
+        if (!mealId && !value.length) {
           return this.createError({
             path: "image",
             message: wordBook.format(
@@ -30,20 +44,19 @@ const MealFormPage = () => {
             ),
           });
         }
-        if (!SUPPORTED_IMAGES.includes(value[0].type)) {
+
+        if (
+          value &&
+          value.length &&
+          !SUPPORTED_IMAGES.includes(value[0].type)
+        ) {
           return this.createError({
             path: "image",
             message: "فرمت فایل تنها میبایست عکس باشد(png/jpeg)",
           });
         }
         return true;
-      })
-      .required(
-        wordBook.format(
-          wordBook.fields.addMeal.image.fa,
-          wordBook.messages.validation.required.fa,
-        ),
-      ),
+      }),
     name: Yup.string().required(
       wordBook.format(
         wordBook.fields.addMeal.name.fa,
@@ -59,34 +72,84 @@ const MealFormPage = () => {
   });
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<MealFormValues>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      name: "",
+      image: null,
+      price: "",
+    },
   });
+
+  useEffect(() => {
+    const fetchSingleMeal = async () => {
+      try {
+        const {
+          data: { image, name, price },
+        } = await getSingleMealRequest(mealId);
+        setImage(image);
+        setValue("name", name);
+        setValue("price", price);
+      } catch (error) {
+        toast.error("مشکلی در سرور وجود دارد مجدد امتحان کنید");
+      }
+    };
+
+    if (mealId) {
+      fetchSingleMeal();
+    }
+  }, []);
+
+  console.log(errors);
   const [loading, setLoading] = useState<boolean>();
   const handleSubmitForm = async (values: MealFormValues) => {
     try {
       setLoading(true);
       const body = new FormData();
-      body.append("image", values.image[0]);
+      body.append("image", values.image ? (values.image as FileList)[0] : "");
       body.append("name", values.name);
       body.append("price", values.price);
 
-      await addMealRequest(body);
-      toast.success("اضافه کردن غذا با موفقیت انجام شد");
-
+      if (mealId) {
+        body.append("id", mealId);
+        await editMealRequest(body, mealId);
+        toast.success("ویرایش غذا با موفقیت انجام شد");
+      } else {
+        await addMealRequest(body);
+        toast.success("اضافه کردن غذا با موفقیت انجام شد");
+      }
       navigate("/admin/manage-meals");
       setLoading(false);
     } catch (error) {
+      console.log(error);
       setLoading(false);
-      toast.error("خطایی در ثبت غذای جدید پیش آمده مجدد امتحان کنید");
+      toast.error("خطایی در سرور پیش آمده مجدد امتحان کنید");
     }
   };
+
+  console.log(getImageAddress(image));
+
   return (
-    <AdminDashboardContainer title="اضافه کردن غذای جدید">
+    <AdminDashboardContainer
+      title={mealId ? "ویرایش غذای جدید" : "اضافه کردن غذای جدید"}
+    >
       <form onSubmit={handleSubmit(handleSubmitForm)}>
-        <Box></Box>
+        <Box>
+          {mealId && image.length ? (
+            <Image
+              width="50%"
+              mb="3"
+              rounded="base"
+              crossOrigin="anonymous"
+              src={getImageAddress(image)}
+            />
+          ) : (
+            <></>
+          )}
+        </Box>
         <FormControl mb="3">
           <FormLabel>عکس غذا</FormLabel>
           <Input type="file" {...register("image")} accept="images/*" />

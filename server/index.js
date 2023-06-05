@@ -14,7 +14,11 @@ const start = () => {
   const PORT = process.env.PORT || 5000;
   app.use(bodyParser.json());
   app.use(cors());
-  app.use(helmet());
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: false,
+    })
+  );
   app.use(morgan("dev"));
   app.use(fileUpload());
   app.use("/uploads", express.static(path.join(__dirname, "uploads")));

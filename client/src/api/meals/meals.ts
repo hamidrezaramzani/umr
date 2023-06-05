@@ -12,3 +12,11 @@ export const getMealsRequest = async <T>() => {
 export const deleteMealRequest = async (mealId: string) => {
     return await client.delete(`/meal/delete/${mealId}`);
 }
+
+export const editMealRequest = async (values: FormData, mealId: string) => {
+    return await client.put(`/meal/edit-meal/${mealId}`, values);
+}
+
+export const getSingleMealRequest = async (mealId: string | undefined) => {
+    return await client.get(`/meal/one/${mealId}`);
+}

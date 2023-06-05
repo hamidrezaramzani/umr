@@ -60,6 +60,14 @@ const protectedRoutes: RouteObject[] = [
           </ProtectedRoute>
         ),
       },
+      {
+        path: "edit-meal/:mealId?",
+        element: (
+          <ProtectedRoute type="admin">
+            <MealFormPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ];

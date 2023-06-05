@@ -46,8 +46,48 @@ const deleteMeal = async (req, res) => {
   }
 };
 
+const editMeal = async (req, res) => {
+  try {
+    const body = req.body;
+    delete body.image;
+
+    if (req.files) {
+      const meal = await Meal.findOne({ _id: body.id });
+      await fs.unlink(path.join(__dirname, "../", "uploads", meal.image));
+      const fileName = `${req.files.image.md5}${req.files.image.name}`;
+      const destinationPath = path.join(__dirname, "../", "uploads", fileName);
+      req.files.image.mv(destinationPath, (err) => {
+        if (err) {
+          throw new Error("upload failed");
+        }
+      });
+
+      body.image = fileName;
+    }
+    await Meal.updateOne({ _id: body.id }, body);
+    return res.status(201).json({
+      message: "meal editied",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
+
+const getSingleMeal = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const meal = await Meal.findOne({ _id: id });
+    return res.status(200).json(meal);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
 module.exports = {
   addMeal,
   allMeals,
   deleteMeal,
+  editMeal,
+  getSingleMeal,
 };
