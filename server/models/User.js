@@ -10,18 +10,23 @@ const UserSchema = new Schema({
   studentNumber: {
     type: String,
     required: true,
+    unique: true,
   },
   meliCode: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
     required: true,
   },
+  birthday: {
+    type: String,
+  },
   type: {
     type: String,
-    enum: [ "user", "admin" ],
+    enum: ["student", "admin"],
     required: true,
   },
 });

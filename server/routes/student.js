@@ -5,7 +5,7 @@ const {
   deleteStudent,
   getOneStudent,
   editStudent,
-} = require("../controllers/student");
+} = require("../controllers/user");
 const authMiddleware = require("../middlewares/authMiddleware");
 const addStudentValidator = require("../validators/student/addStudentValidator");
 const editStudentValidator = require("../validators/student/editStudentValidator");
