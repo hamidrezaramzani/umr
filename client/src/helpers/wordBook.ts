@@ -47,6 +47,12 @@ export const wordBook = {
                 fa: "عنوان",
                 en: "Title"
             }
+        },
+        addExtraMeal: {
+            title: {
+                fa: "عنوان",
+                en: "Title"
+            }
         }
     },
     messages: {

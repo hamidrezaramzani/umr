@@ -49,6 +49,23 @@ export const adminSidebarItems: AdminSidebarProps[] = [
         ]
     },
     {
+        title: "غذای اضافه",
+        childrens: [
+            {
+                title: "اضافه کردن غذای اضافه جدید",
+                link: "/admin/add-extra-meal",
+                name: "add-extra-meal",
+                Icon: MdOutlineFastfood,
+            },
+            {
+                title: "مدیریت غذاهای اضافه",
+                link: "/admin/manage-extra-meals",
+                name: "manage-extra-meals",
+                Icon: MdOutlineFastfood
+            },
+        ]
+    },
+    {
         title: "وقت غذاها",
         childrens: [
             {
