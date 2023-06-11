@@ -27,9 +27,13 @@ const Login = () => {
   const { login, user } = useContext(UserContext);
   useEffect(() => {
     if (user?.isLogged) {
-      navigate("/");
+      if (user.user?.type === "student") {
+        navigate("/panel");
+      } else {
+        navigate("/admin/dashboard");
+      }
     }
-  }, []);
+  }, [navigate, user]);
   const schema = Yup.object().shape({
     meliCode: Yup.string().required(
       wordBook.format(
@@ -57,7 +61,6 @@ const Login = () => {
       const { data } = await loginRequest(values);
       toast.success("ورود به موفقیت انجام شد");
       login(data.user);
-      navigate("/");
     } catch (error) {
       if ((error as AxiosError).response?.status === 401) {
         toast.error("کد ملی و یا رمز عبور اشتباه است");

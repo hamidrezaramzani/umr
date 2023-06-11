@@ -6,6 +6,11 @@ const theme = extendTheme({
         heading: `iran-yekan-bold`,
         body: `iran-yekan-regular`,
     },
+    colors: {
+        brand: {
+            100: "#3182ce"
+        }
+    },
 })
 
 export default theme

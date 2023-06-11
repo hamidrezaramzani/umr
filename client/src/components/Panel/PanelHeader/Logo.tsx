@@ -1,13 +1,12 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/images/logo.jpg";
+
 const Logo = () => {
   return (
-    <Box>
-      <Link to="/">
-        <Image src={logo} width="14" />
-      </Link>
-    </Box>
+    <Link to="/">
+      <Image src={logo} rounded="full" width="20" />
+    </Link>
   );
 };
 

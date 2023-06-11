@@ -8,7 +8,16 @@ import ManageMealsPage from "../pages/Admin/ManageMeals/ManageMealsPage";
 import MealTimeFormPage from "../pages/Admin/MealTimeFormPage/MealTimeFormPage";
 import ManageMealTimes from "../pages/Admin/ManageMealTimes/ManageMealTimesForm";
 import Logout from "../components/Logout/Logout";
+import PanelPage from "../pages/Panel/PanelPage";
 const protectedRoutes: RouteObject[] = [
+  {
+    path: "/panel",
+    element: (
+      <ProtectedRoute type="student">
+        <PanelPage />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/admin",
     children: [
