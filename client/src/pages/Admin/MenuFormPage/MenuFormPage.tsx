@@ -19,7 +19,7 @@ import { IExtraMeal } from "../ManageExtraMeals/ManageExtraMeals";
 import { toast } from "react-toastify";
 import { addMenuRequest, getMenuFormValues } from "../../../api/menu/menu";
 import * as Yup from "yup";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { wordBook } from "../../../helpers/wordBook";
 import FormErrorMessage from "../../../components/FormErrorMessage/FormErrorMessage";
@@ -71,6 +71,8 @@ const MenuFormPage = () => {
     register,
     handleSubmit,
     setValue,
+    control,
+    getValues,
     formState: { errors },
   } = useForm<MenuFormValues>({
     resolver: yupResolver(schema),
@@ -103,7 +105,7 @@ const MenuFormPage = () => {
     }
   };
 
-  console.log(errors);
+  console.log(errors, getValues());
 
   return (
     <AdminDashboardContainer title="اضافه کردن آیتم منو">
@@ -133,24 +135,39 @@ const MenuFormPage = () => {
           <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl mb="3">
-          <FormLabel>غذا</FormLabel>
-          <RadioGroup
-            colorScheme="blue"
-            {...register("meal")}
-            onChange={(value: string) => {
-              setValue("meal", value);
-            }}
-          >
-            <VStack gap="3" spacing={[1, 5]} justify="start" alignItems="start">
-              {meals?.map((meal) => (
-                <Radio value={meal._id}>{meal.name}</Radio>
-              ))}
-            </VStack>
-          </RadioGroup>
-          <FormErrorMessage>{errors.meal?.message}</FormErrorMessage>
-        </FormControl>
-
+        <Controller
+          control={control}
+          name="meal"
+          render={({
+            field: { onChange, onBlur, value, name },
+            fieldState: { error },
+          }) => (
+            <FormControl mb="3">
+              <FormLabel>غذا</FormLabel>
+              <RadioGroup
+                colorScheme="blue"
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                name={name}
+              >
+                <VStack
+                  gap="3"
+                  spacing={[1, 5]}
+                  justify="start"
+                  alignItems="start"
+                >
+                  {meals?.map((meal) => (
+                    <Radio key={meal._id} value={meal._id}>
+                      {meal.name}
+                    </Radio>
+                  ))}
+                </VStack>
+              </RadioGroup>
+              <FormErrorMessage>{error?.message}</FormErrorMessage>
+            </FormControl>
+          )}
+        />
         <FormControl mb="3">
           <FormLabel>غذای اضافه</FormLabel>
           <CheckboxGroup
@@ -168,25 +185,40 @@ const MenuFormPage = () => {
           </CheckboxGroup>
           <FormErrorMessage>{errors.extraMeals?.message}</FormErrorMessage>
         </FormControl>
+        <Controller
+          control={control}
+          name="mealTimes"
+          render={({
+            field: { onChange, onBlur, value, name },
+            fieldState: { error },
+          }) => (
+            <FormControl mb="3">
+              <FormLabel>وقت غذا</FormLabel>
+              <RadioGroup
+                name={name}
+                colorScheme="blue"
+                value={value}
+                onChange={onChange} // send value to hook form
+                onBlur={onBlur} // notify when input is touched
+              >
+                <VStack
+                  gap="3"
+                  spacing={[1, 5]}
+                  justify="start"
+                  alignItems="start"
+                >
+                  {mealTimes?.map((mealTime) => (
+                    <Radio key={mealTime._id} value={mealTime._id}>
+                      {mealTime.title}
+                    </Radio>
+                  ))}
+                </VStack>
+              </RadioGroup>
+              <FormErrorMessage>{error?.message}</FormErrorMessage>
+            </FormControl>
+          )}
+        />
 
-        <FormControl mb="3">
-          <FormLabel>وقت غذا</FormLabel>
-          <RadioGroup
-            colorScheme="blue"
-            {...register("mealTimes")}
-            onChange={(value: string) => {
-              console.log(value);
-              setValue("mealTimes", value);
-            }}
-          >
-            <VStack gap="3" spacing={[1, 5]} justify="start" alignItems="start">
-              {mealTimes?.map((mealTime) => (
-                <Radio value={mealTime._id}>{mealTime.title}</Radio>
-              ))}
-            </VStack>
-          </RadioGroup>
-          <FormErrorMessage>{errors.mealTimes?.message}</FormErrorMessage>
-        </FormControl>
         <Button
           isLoading={loading}
           type="submit"

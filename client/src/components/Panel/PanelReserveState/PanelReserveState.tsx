@@ -10,49 +10,85 @@ import {
   Heading,
   Text,
   HStack,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { FiEye, FiPlusCircle } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import * as moment from "jalali-moment";
-import { HiChevronRight } from "react-icons/hi";
 import { MdChevronRight } from "react-icons/md";
-const PanelReserveState = () => {
+import { IMealTime } from "../../../pages/Admin/ManageMealTimes/ManageMealTimesForm";
+import { IMenuItem } from "../../../pages/Panel/PanelPage";
+import PanelReserveModal from "../PanelHeader/PanelReserveModal/PanelReserveModal";
+import { useState } from "react";
+interface PanelReserverStateProps {
+  mealTimes?: IMealTime[];
+  menus?: IMenuItem[];
+}
+const PanelReserveState = ({ mealTimes, menus }: PanelReserverStateProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedMenuItems, setSelectedMenuItems] = useState<IMenuItem[]>([]);
+  const handleToggleReserveModal = (menus: IMenuItem[]) => {
+    console.log(menus);
+    setSelectedMenuItems(menus);
+    onOpen();
+  };
   const renderTableBody = () => {
-    const now = moment().locale("fa"); // create a moment object representing the current date and time
-    const startOfWeek = now.clone().startOf("week"); // set the moment object to the start of the current week
-    const endOfWeek = now.clone().endOf("week"); // set the moment object to the end of the current week
+    const now = moment().locale("fa");
+    const startOfWeek = now.clone().startOf("week");
+    const endOfWeek = now.clone().endOf("week");
 
-    // iterate over the days of the week and output their names and dates
     const days = [];
     for (
       let day = startOfWeek;
       day <= endOfWeek;
       day = day.clone().add(1, "day")
     ) {
-      days.push(day.format("dddd, DD MMMM  YYYY"));
+      days.push({
+        title: day.format("dddd, DD MMMM  YYYY"),
+        date: day.format("jYYYY/jMM/jDD"),
+      });
     }
+
     return (
       <Tbody>
         {days.map((day) => {
           return (
             <Tr>
-              <Td fontSize="15">{day}</Td>
-              <Td>
-                <HStack fontSize="15" color="red.300">
-                  <Text>رزرو نشده</Text>
-                  <FiPlusCircle />
-                </HStack>
-              </Td>
-              <Td>
-                <HStack fontSize="15" color="blue.300">
-                  <Text>رزرو شده</Text>
-                  <FiEye />
-                </HStack>
-              </Td>
-              <Td>
-                <HStack fontSize="15" color="gray.500">
-                  <Text>تعریف نشده</Text>
-                </HStack>
-              </Td>
+              <Td fontSize="15">{day.title}</Td>
+              {mealTimes?.map((mealTime) => {
+                return (
+                  <Td>
+                    {menus?.some(
+                      (menu) =>
+                        menu.mealTimes?._id === mealTime._id &&
+                        day.date === menu.date,
+                    ) ? (
+                      <HStack fontSize="15" color="red.300">
+                        <Text>رزرو نشده</Text>
+                        <Button
+                          size="xs"
+                          colorScheme="blue"
+                          variant="unstyled"
+                          onClick={() =>
+                            handleToggleReserveModal(
+                              menus.filter(
+                                (menu) =>
+                                  day.date === menu.date &&
+                                  menu.mealTimes?._id === mealTime._id,
+                              ),
+                            )
+                          }
+                        >
+                          <FiEye fontSize={15} />
+                        </Button>
+                      </HStack>
+                    ) : (
+                      <HStack fontSize="15" color="gray.300">
+                        <Text>تعریف نشده</Text>
+                      </HStack>
+                    )}
+                  </Td>
+                );
+              })}
             </Tr>
           );
         })}
@@ -61,6 +97,11 @@ const PanelReserveState = () => {
   };
   return (
     <TableContainer width="100%">
+      <PanelReserveModal
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedMenuItems={selectedMenuItems}
+      />
       <HStack justify="center">
         <Heading color="gray.700" fontSize="20" width="100%">
           وضعیت رزرو این هفته
@@ -82,9 +123,9 @@ const PanelReserveState = () => {
         <Thead>
           <Tr>
             <Th>تاریخ</Th>
-            <Th>صبحانه</Th>
-            <Th>ناهار</Th>
-            <Th>شام</Th>
+            {mealTimes?.map((mealTime) => (
+              <Th>{mealTime.title}</Th>
+            ))}
           </Tr>
         </Thead>
         {renderTableBody()}
