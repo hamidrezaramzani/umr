@@ -11,6 +11,8 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const mealTimeRoutes = require("./routes/mealTime");
 const extraMealRoutes = require("./routes/extraMeal");
+const menuRoutes = require("./routes/menu");
+require("./database/connection");
 const start = () => {
   const app = express();
   const PORT = process.env.PORT || 5000;
@@ -29,6 +31,7 @@ const start = () => {
   app.use("/api/v1/meal", mealRoutes);
   app.use("/api/v1/mealTime", mealTimeRoutes);
   app.use("/api/v1/extraMeal", extraMealRoutes);
+  app.use("/api/v1/menu", menuRoutes);
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
     console.log("Server running at port ", PORT);

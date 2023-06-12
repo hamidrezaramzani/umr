@@ -1,4 +1,4 @@
-const mongoose = require("../database/connection");
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -15,7 +15,8 @@ const MealSchema = new Schema({
     type: Number,
     required: true,
   },
-});
+},
+{ timestamps: true });
 
 const MealModel = mongoose.model("Meal", MealSchema);
 

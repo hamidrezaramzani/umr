@@ -1,14 +1,16 @@
-const mongoose = require("../database/connection");
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const ExtraMealSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
+const ExtraMealSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
   },
-});
+  { timestamps: true }
+);
 
-const ExtraMealModel = mongoose.model("ExtraMeal", ExtraMealSchema);
-
-module.exports = mongoose.models.ExtraMeal || ExtraMealModel;
+module.exports =
+  mongoose.models.ExtraMeal || mongoose.model("ExtraMeal", ExtraMealSchema);

@@ -11,6 +11,7 @@ import Logout from "../components/Logout/Logout";
 import PanelPage from "../pages/Panel/PanelPage";
 import ExtraMealFormPage from "../pages/Admin/ExtraMealFormPage/ExtraMealFormPage";
 import ManageExtraMeals from "../pages/Admin/ManageExtraMeals/ManageExtraMeals";
+import MenuFormPage from "../pages/Admin/MenuFormPage/MenuFormPage";
 const protectedRoutes: RouteObject[] = [
   {
     path: "/panel",
@@ -120,6 +121,14 @@ const protectedRoutes: RouteObject[] = [
         element: (
           <ProtectedRoute type="admin">
             <MealTimeFormPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "add-menu",
+        element: (
+          <ProtectedRoute type="admin">
+            <MenuFormPage />
           </ProtectedRoute>
         ),
       },

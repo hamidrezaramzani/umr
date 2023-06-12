@@ -86,9 +86,9 @@ export const adminSidebarItems: AdminSidebarProps[] = [
         title: "منو",
         childrens: [
             {
-                title: "ویرایش منو",
-                link: "/admin/edit-menu",
-                name: "edit-menu",
+                title: "اضافه کردن آیتم منو",
+                link: "/admin/add-menu",
+                name: "add-menu",
                 Icon: RiReservedLine
             },
             {

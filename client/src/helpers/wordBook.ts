@@ -53,6 +53,23 @@ export const wordBook = {
                 fa: "عنوان",
                 en: "Title"
             }
+        },
+        menu: {
+            date: {
+                fa: "تاریخ",
+                en: "Date"
+            },
+            meal: {
+                fa: "غذا",
+                en: "meal"
+            },
+            extraMeal: {
+                fa: "غذای اضافه", en: "Extra Meal"
+            },
+            mealTimes: {
+                fa: "وقت غذا",
+                en: "Meal Time"
+            }
         }
     },
     messages: {
