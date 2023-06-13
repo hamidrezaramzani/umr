@@ -20,23 +20,38 @@ export interface IMenuItem {
   meal?: IMeal;
   mealTimes?: IMealTime;
   extraMeals?: IExtraMeal[];
+  isReserved?: boolean;
+  userId?: string;
+}
+
+export interface IUser {
+  _id: string;
+  fullName: string;
+}
+
+export interface IReserve {
+  _id?: string;
+  user: IUser;
+  menu: IMenuItem;
 }
 
 interface IPanelValues {
   menus?: IMenuItem[];
   mealTimes?: IMealTime[];
+  reserveds?: IReserve[];
 }
 const PanelPage = () => {
-  const [{ menus, mealTimes }, setPanelValues] = useState<IPanelValues>({});
+  const [{ menus, mealTimes, reserveds }, setPanelValues] =
+    useState<IPanelValues>({});
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchPanelValues = async () => {
       try {
         setLoading(true);
         const {
-          data: { mealTimes, menus },
+          data: { mealTimes, menus, reserveds },
         } = await getPanelValues<IPanelValues>();
-        setPanelValues({ menus, mealTimes });
+        setPanelValues({ menus, mealTimes, reserveds });
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -45,7 +60,6 @@ const PanelPage = () => {
     };
     fetchPanelValues();
   }, []);
-
 
   return (
     <HStack
@@ -74,7 +88,11 @@ const PanelPage = () => {
               <PanelFoodVote />
             </VStack>
             <VStack width={"50%"} p="5" bg="white" height="auto" rounded="md">
-              <PanelReserveState menus={menus} mealTimes={mealTimes} />
+              <PanelReserveState
+                menus={menus}
+                mealTimes={mealTimes}
+                reserveds={reserveds}
+              />
             </VStack>
             <VStack width="20%" height="80vh">
               <PanelCart />

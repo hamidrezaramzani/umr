@@ -13,6 +13,7 @@ const mealTimeRoutes = require("./routes/mealTime");
 const extraMealRoutes = require("./routes/extraMeal");
 const menuRoutes = require("./routes/menu");
 const panelRoutes = require("./routes/panel");
+const reserveRoutes = require("./routes/reserve");
 require("./database/connection");
 const start = () => {
   const app = express();
@@ -34,6 +35,7 @@ const start = () => {
   app.use("/api/v1/extraMeal", extraMealRoutes);
   app.use("/api/v1/menu", menuRoutes);
   app.use("/api/v1/panel", panelRoutes);
+  app.use("/api/v1/reserve", reserveRoutes);
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
     console.log("Server running at port ", PORT);

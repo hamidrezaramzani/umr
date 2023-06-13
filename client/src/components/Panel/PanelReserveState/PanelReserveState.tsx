@@ -16,21 +16,27 @@ import { FiEye } from "react-icons/fi";
 import * as moment from "jalali-moment";
 import { MdChevronRight } from "react-icons/md";
 import { IMealTime } from "../../../pages/Admin/ManageMealTimes/ManageMealTimesForm";
-import { IMenuItem } from "../../../pages/Panel/PanelPage";
+import { IMenuItem, IReserve } from "../../../pages/Panel/PanelPage";
 import PanelReserveModal from "../PanelHeader/PanelReserveModal/PanelReserveModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../../context/UserProvider";
 interface PanelReserverStateProps {
   mealTimes?: IMealTime[];
   menus?: IMenuItem[];
+  reserveds?: IReserve[];
 }
-const PanelReserveState = ({ mealTimes, menus }: PanelReserverStateProps) => {
+const PanelReserveState = ({
+  mealTimes,
+  menus,
+  reserveds,
+}: PanelReserverStateProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedMenuItems, setSelectedMenuItems] = useState<IMenuItem[]>([]);
-  const handleToggleReserveModal = (menus: IMenuItem[]) => {
-    console.log(menus);
-    setSelectedMenuItems(menus);
+  const handleToggleReserveModal = (menus: IMenuItem[] | undefined) => {
+    setSelectedMenuItems(menus!);
     onOpen();
   };
+  const { user } = useContext(UserContext);
   const renderTableBody = () => {
     const now = moment().locale("fa");
     const startOfWeek = now.clone().startOf("week");
@@ -55,26 +61,53 @@ const PanelReserveState = ({ mealTimes, menus }: PanelReserverStateProps) => {
             <Tr>
               <Td fontSize="15">{day.title}</Td>
               {mealTimes?.map((mealTime) => {
+                const isAvailable = menus?.some(
+                  (menu) =>
+                    menu.mealTimes?._id === mealTime._id &&
+                    day.date === menu.date,
+                );
+
+                const isReserved = menus
+                  ?.filter(
+                    (menu) =>
+                      menu.date === day.date &&
+                      menu.mealTimes?._id === mealTime._id,
+                  )
+                  ?.some((menu) =>
+                    reserveds?.find((reserve) => reserve.menu._id === menu._id),
+                  );
                 return (
                   <Td>
-                    {menus?.some(
-                      (menu) =>
-                        menu.mealTimes?._id === mealTime._id &&
-                        day.date === menu.date,
-                    ) ? (
-                      <HStack fontSize="15" color="red.300">
-                        <Text>رزرو نشده</Text>
+                    {isAvailable ? (
+                      <HStack
+                        fontSize="15"
+                        color={isReserved ? "blue.300" : "red.300"}
+                      >
+                        <Text>{isReserved ? "رزرو شده" : "رزرو نشده"}</Text>
                         <Button
                           size="xs"
                           colorScheme="blue"
                           variant="unstyled"
                           onClick={() =>
                             handleToggleReserveModal(
-                              menus.filter(
-                                (menu) =>
-                                  day.date === menu.date &&
-                                  menu.mealTimes?._id === mealTime._id,
-                              ),
+                              menus
+                                ?.filter(
+                                  (menu) =>
+                                    day.date === menu.date &&
+                                    menu.mealTimes?._id === mealTime._id,
+                                )
+                                .map((menu) => {
+                                  menu.isReserved =
+                                    menu.date === day.date &&
+                                    menu.mealTimes?._id === mealTime._id &&
+                                    !!reserveds?.find(
+                                      (reserve) =>
+                                        reserve.menu._id === menu._id,
+                                    );
+
+                                  menu.userId = user?.user?.id;
+                                  return menu;
+                                }),
                             )
                           }
                         >
