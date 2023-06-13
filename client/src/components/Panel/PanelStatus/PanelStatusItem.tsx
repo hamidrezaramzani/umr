@@ -9,9 +9,11 @@ import {
   Box,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useContext } from "react";
 import { AiOutlineBarcode } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { reserveMenuItemRequest } from "../../../api/reserve/reserve";
+import { UserContext } from "../../../context/UserProvider";
 import { getImageAddress } from "../../../helpers/getImageAddress";
 import { IExtraMeal } from "../../../pages/Admin/ManageExtraMeals/ManageExtraMeals";
 import PanelQRCode from "../PanelQRCode/PanelQRCode";
@@ -23,7 +25,6 @@ interface PanelStatusItemProps {
   extra?: IExtraMeal[];
   image?: string;
   isReserved?: boolean;
-  userId?: string;
 }
 const PanelStatusItem = ({
   title,
@@ -32,9 +33,9 @@ const PanelStatusItem = ({
   image,
   menuId,
   isReserved,
-  userId,
 }: PanelStatusItemProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useContext(UserContext);
   const handleReserveMenuItem = async () => {
     try {
       await reserveMenuItemRequest(menuId!);
@@ -48,16 +49,16 @@ const PanelStatusItem = ({
   };
   return (
     <Tooltip label={type} hasArrow placement="top-start">
-      <HStack justify="center" alignItems="center" alignContent="center" mb="3">
+      <HStack justify="space-between" alignContent="space-between" width="100%" mb="3">
         <PanelQRCode
-          id={userId}
-          userId={userId}
+          id={menuId}
+          userId={user?.user?.id}
           isOpen={isOpen}
           onClose={onClose}
         />
         <Image
           src={getImageAddress(image!)}
-          width="20%"
+          width="80px"
           height="80px"
           fallback={
             <Box width="20%" height="80px" bg="gray.500" rounded="md"></Box>
