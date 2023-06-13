@@ -9,11 +9,11 @@ import {
   Box,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineBarcode } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { reserveMenuItemRequest } from "../../../api/reserve/reserve";
-import { PanelContext } from "../../../context/PanelProvider";
+import { IPanelValues, PanelContext } from "../../../context/PanelProvider";
 import { UserContext } from "../../../context/UserProvider";
 import { getImageAddress } from "../../../helpers/getImageAddress";
 import { IExtraMeal } from "../../../pages/Admin/ManageExtraMeals/ManageExtraMeals";
@@ -39,15 +39,30 @@ const PanelStatusItem = ({
 }: PanelStatusItemProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
+  const [isDisable, setisDisable] = useState<boolean>(false);
   const { setReserve } = useContext(PanelContext);
   const handleReserveMenuItem = async () => {
-    try {
-      const { data } = await reserveMenuItemRequest(menuId!, mealTimeId!);
-      toast.success("رزرو با موفقیت انجام شد");
-      setReserve(data);
-    } catch (error) {
-      toast.error("مشکلی در سمت سرور وجود دارد مجددا بعدا امتحان کنید");
-    }
+    toast.promise(() => reserveMenuItemRequest(menuId!, mealTimeId!), {
+      pending: {
+        render() {
+          setisDisable(true);
+          return "در حال ثبت رزرو غذا";
+        },
+      },
+      success: {
+        render({ data: { data } }: { data: { data: IPanelValues } }) {
+          setisDisable(false);
+          setReserve(data);
+          return "رزرو غذا با موفقیت انجام شد";
+        },
+      },
+      error: {
+        render() {
+          setisDisable(false);
+          return "خطایی در ثبت رزرو غذا رخ داده است. لطفا مجدد امتحان کنید";
+        },
+      },
+    });
   };
 
   const handleToggleShowBarcode = () => {
@@ -104,6 +119,7 @@ const PanelStatusItem = ({
             colorScheme="blue"
             size="sm"
             onClick={handleReserveMenuItem}
+            disabled={isDisable}
           >
             رزرو
           </Button>

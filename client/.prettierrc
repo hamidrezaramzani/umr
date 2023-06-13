@@ -10,5 +10,5 @@
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
   "proseWrap": "never",
-  "endOfLine": "auto"
+  "endOfLine": "lf"
 }

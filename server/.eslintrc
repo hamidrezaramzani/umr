@@ -41,7 +41,7 @@
         "avoidEscape": true
       }
     ],
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": ["off"],
     "arrow-parens": [
       "error",
       "as-needed",

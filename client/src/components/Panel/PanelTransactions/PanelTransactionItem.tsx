@@ -3,18 +3,10 @@ import {
   MdOutlineAddShoppingCart,
   MdOutlineShoppingCartCheckout,
 } from "react-icons/md";
-interface PanelTransactionItemProps {
-  type: string;
-  date: string;
-  value: number;
-  title: string;
-}
-const PanelTransactionItem = ({
-  type,
-  date,
-  value,
-  title,
-}: PanelTransactionItemProps) => {
+import * as moment from "jalali-moment";
+import { ITransaction } from "./PanelTransactions";
+
+const PanelTransactionItem = ({ type, date, value }: ITransaction) => {
   return (
     <HStack width="100%" justify="space-between">
       <HStack align="start">
@@ -25,7 +17,7 @@ const PanelTransactionItem = ({
         )}
         <VStack align="start">
           <Heading fontSize="15" color="#333">
-            {title}
+            {type === "add" ? "افزایش موجودی" : "انتقال موجودی"}
           </Heading>
           <Text
             color="gray.400"
@@ -33,7 +25,7 @@ const PanelTransactionItem = ({
             fontSize="14"
             fontWeight="normal"
           >
-            {date}
+            {moment(date).locale("fa").format("jYYYY/jMM/jDD HH:mm")}
           </Text>
         </VStack>
       </HStack>

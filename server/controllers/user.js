@@ -2,6 +2,9 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generateHashedPassword = require("../helpers/generateHashedPassword");
+const Transaction = require("../models/Transaction");
+const { getPanelValues } = require("./panel");
+
 const login = async (req, res) => {
   try {
     const body = req.body;
@@ -100,6 +103,28 @@ const editStudent = async (req, res) => {
   }
 };
 
+const addBalance = async (req, res) => {
+  try {
+    const value = req.params.value;
+    const userId = req.currentUser.id;
+    await Transaction.create({
+      value,
+      user: userId,
+      type: "add",
+      date: new Date(),
+    });
+    const user = await User.findOne({ _id: userId });
+    await User.findByIdAndUpdate(userId, {
+      $set: {
+        balance: user.balance + Number(value),
+      },
+    });
+    return getPanelValues(req, res);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
 module.exports = {
   login,
   addStudent,
@@ -107,4 +132,5 @@ module.exports = {
   deleteStudent,
   getOneStudent,
   editStudent,
+  addBalance,
 };

@@ -1,7 +1,9 @@
 const MealTime = require("../models/MealTime");
+const Transaction = require("../models/Transaction");
 const Menu = require("../models/Menu");
 const moment = require("jalali-moment");
 const Reserve = require("../models/Reserve");
+const User = require("../models/User");
 const getPanelValues = async (req, res) => {
   try {
     const userId = req.currentUser.id;
@@ -32,10 +34,16 @@ const getPanelValues = async (req, res) => {
         },
       ],
     });
+    const user = await User.findById(userId);
+    const transactions = await Transaction.find({ user: userId })
+      .populate("user")
+      .limit(5);
     const todayReserves = allReserves.filter(
-      reserve => reserve.menu.date === date
+      (reserve) => reserve.menu.date === date
     );
-    return res.status(200).json({ menus, mealTimes, reserveds, todayReserves });
+    return res
+      .status(200)
+      .json({ menus, mealTimes, reserveds, todayReserves, user, transactions });
   } catch (error) {
     return res.status(500).json(error);
   }

@@ -28,6 +28,12 @@ export interface IMenuItem {
 export interface IUser {
   _id: string;
   fullName: string;
+  studentNumber: string;
+  meliCode: string;
+  password: string;
+  birthday: string;
+  type: "student" | "admin";
+  balance: number;
 }
 
 export interface IReserve {
@@ -39,7 +45,7 @@ export interface IReserve {
 const PanelPage = () => {
   const [loading, setLoading] = useState(false);
   const {
-    panelValues: { mealTimes, menus, reserveds, todayReserves },
+    panelValues: { mealTimes, menus, reserveds, todayReserves, transactions },
     initialValues,
   } = useContext(PanelContext);
   useEffect(() => {
@@ -92,7 +98,7 @@ const PanelPage = () => {
             </VStack>
             <VStack width="20%" height="80vh">
               <PanelCart />
-              <PanelTransactions />
+              <PanelTransactions transactions={transactions} />
             </VStack>
           </HStack>
         )}

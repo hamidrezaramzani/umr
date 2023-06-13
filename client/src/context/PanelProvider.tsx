@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from "react";
+import { ITransaction } from "../components/Panel/PanelTransactions/PanelTransactions";
 import { IMealTime } from "../pages/Admin/ManageMealTimes/ManageMealTimesForm";
 import { IMenuItem, IReserve, IUser } from "../pages/Panel/PanelPage";
 
 export interface IPanelValues {
+  user?: IUser;
   menus?: IMenuItem[];
   mealTimes?: IMealTime[];
   reserveds?: IReserve[];
   todayReserves?: IReserve[];
+  transactions?: ITransaction[];
 }
 
 interface PanelContextProps {

@@ -1,43 +1,22 @@
 import { Button, HStack, VStack, Text } from "@chakra-ui/react";
+import { IUser } from "../../../pages/Panel/PanelPage";
 import PanelTransactionItem from "./PanelTransactionItem";
+import * as moment from "jalali-moment";
 
-const PanelTransactions = () => {
-  const transactions = [
-    {
-      title: "افزایش موجودی",
-      date: "۲۱ خرداد ۱۴۰۲ − ۲۰:۱۸",
-      value: 20000,
-      type: "add",
-    },
+export interface ITransaction {
+  _id: string;
+  type: "add" | "move";
+  value: number;
+  user: IUser;
+  date: moment.Moment;
+}
 
-    {
-      title: "انتقال موجودی",
-      date: "۲۱ خرداد ۱۴۰۲ − ۲۰:۱۸",
-      value: 145000,
-      type: "move",
-    },
-    {
-      title: "انتقال موجودی",
-      date: "۲۱ خرداد ۱۴۰۲ − ۲۰:۱۸",
-      value: 50000,
-      type: "move",
-    },
-    {
-      title: "افزایش موجودی",
-      date: "۲۱ خرداد ۱۴۰۲ − ۲۰:۱۸",
-      value: 40000,
-      type: "add",
-    },
-    {
-      title: "انتقال موجودی",
-      date: "۲۱ خرداد ۱۴۰۲ − ۲۰:۱۸",
-      value: 65000,
-      type: "move",
-    },
-  ];
-
+interface PanelTransactionProps {
+  transactions?: ITransaction[];
+}
+const PanelTransactions = ({ transactions }: PanelTransactionProps) => {
   const renderTransactions = () => {
-    return transactions.map((transaction) => (
+    return transactions?.map((transaction) => (
       <PanelTransactionItem {...transaction} />
     ));
   };

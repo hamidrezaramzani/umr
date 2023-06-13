@@ -1,5 +1,9 @@
 import "./styles/global.css";
-import { ChakraBaseProvider, ChakraProvider } from "@chakra-ui/react";
+import {
+  ChakraBaseProvider,
+  ChakraProvider,
+  ColorModeProvider,
+} from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -12,11 +16,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ChakraProvider theme={theme}>
       <ChakraBaseProvider theme={theme}>
         <BrowserRouter>
-          <ToastContainer
-            position="bottom-left"
-            bodyClassName="iran-yekan-regular"
-          />
-          <App />
+          <ColorModeProvider value="light">
+            <ToastContainer
+              position="bottom-left"
+              bodyClassName="iran-yekan-regular"
+            />
+            <App />
+          </ColorModeProvider>
         </BrowserRouter>
       </ChakraBaseProvider>
     </ChakraProvider>

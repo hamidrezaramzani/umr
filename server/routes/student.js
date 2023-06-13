@@ -5,6 +5,7 @@ const {
   deleteStudent,
   getOneStudent,
   editStudent,
+  addBalance,
 } = require("../controllers/user");
 const authMiddleware = require("../middlewares/authMiddleware");
 const addStudentValidator = require("../validators/student/addStudentValidator");
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.post("/add", addStudentValidator, authMiddleware("admin"), addStudent);
 router.get("/all", authMiddleware("admin"), allStudents);
+router.get("/add-balance/:value", authMiddleware("student"), addBalance);
 router.get("/one/:id", authMiddleware("admin"), getOneStudent);
 router.put(
   "/edit/:id",

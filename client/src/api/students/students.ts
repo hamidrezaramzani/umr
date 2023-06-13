@@ -22,3 +22,7 @@ export const fetchSingleStudentRequest = async (id?: string) => {
 export const editStudentRequest = async (values: AddStudentFormValues, userId: string) => {
     return await client.put(`/student/edit/${userId}`, values);
 }
+
+export const addBalanceRequest = async (value: number) => {
+    return await client.get(`/student/add-balance/${value}`);
+}
