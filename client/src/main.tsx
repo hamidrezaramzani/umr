@@ -12,7 +12,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ChakraProvider theme={theme}>
       <ChakraBaseProvider theme={theme}>
         <BrowserRouter>
-          <ToastContainer position="bottom-left" className="iran-yekan-regular" />
+          <ToastContainer
+            position="bottom-left"
+            bodyClassName="iran-yekan-regular"
+          />
           <App />
         </BrowserRouter>
       </ChakraBaseProvider>

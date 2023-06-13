@@ -72,7 +72,6 @@ const MenuFormPage = () => {
     handleSubmit,
     setValue,
     control,
-    getValues,
     formState: { errors },
   } = useForm<MenuFormValues>({
     resolver: yupResolver(schema),
@@ -105,7 +104,6 @@ const MenuFormPage = () => {
     }
   };
 
-  console.log(errors, getValues());
 
   return (
     <AdminDashboardContainer title="اضافه کردن آیتم منو">

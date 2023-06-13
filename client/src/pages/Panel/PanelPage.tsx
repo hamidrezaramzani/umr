@@ -9,9 +9,10 @@ import PanelTransactions from "../../components/Panel/PanelTransactions/PanelTra
 import { IMeal } from "../Admin/ManageMeals/ManageMealsPage";
 import { IMealTime } from "../Admin/ManageMealTimes/ManageMealTimesForm";
 import { IExtraMeal } from "../Admin/ManageExtraMeals/ManageExtraMeals";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getPanelValues } from "../../api/panel/panel";
+import { IPanelValues, PanelContext } from "../../context/PanelProvider";
 // import { useEffect, useState } from "react";
 // import { IMealTime } from "../Admin/ManageMealTimes/ManageMealTimesForm";
 export interface IMenuItem {
@@ -35,23 +36,18 @@ export interface IReserve {
   menu: IMenuItem;
 }
 
-interface IPanelValues {
-  menus?: IMenuItem[];
-  mealTimes?: IMealTime[];
-  reserveds?: IReserve[];
-}
 const PanelPage = () => {
-  const [{ menus, mealTimes, reserveds }, setPanelValues] =
-    useState<IPanelValues>({});
   const [loading, setLoading] = useState(false);
+  const {
+    panelValues: { mealTimes, menus, reserveds, todayReserves },
+    initialValues,
+  } = useContext(PanelContext);
   useEffect(() => {
     const fetchPanelValues = async () => {
       try {
         setLoading(true);
-        const {
-          data: { mealTimes, menus, reserveds },
-        } = await getPanelValues<IPanelValues>();
-        setPanelValues({ menus, mealTimes, reserveds });
+        const { data } = await getPanelValues<IPanelValues>();
+        initialValues(data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -84,7 +80,7 @@ const PanelPage = () => {
             justify="center"
           >
             <VStack width="20%">
-              <PanelStatus />
+              <PanelStatus todayReserves={todayReserves} />
               <PanelFoodVote />
             </VStack>
             <VStack width={"50%"} p="5" bg="white" height="auto" rounded="md">

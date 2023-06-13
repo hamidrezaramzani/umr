@@ -20,6 +20,7 @@ import { IMenuItem, IReserve } from "../../../pages/Panel/PanelPage";
 import PanelReserveModal from "../PanelHeader/PanelReserveModal/PanelReserveModal";
 import { useContext, useState } from "react";
 import { UserContext } from "../../../context/UserProvider";
+import { PanelContext } from "../../../context/PanelProvider";
 interface PanelReserverStateProps {
   mealTimes?: IMealTime[];
   menus?: IMenuItem[];
@@ -31,14 +32,46 @@ const PanelReserveState = ({
   reserveds,
 }: PanelReserverStateProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedMenuItems, setSelectedMenuItems] = useState<IMenuItem[]>([]);
-  const handleToggleReserveModal = (menus: IMenuItem[] | undefined) => {
-    setSelectedMenuItems(menus!);
+  const [currentMenuItems, setCurrentMenuItems] = useState<{
+    date?: string;
+    mealTimeId?: string;
+  }>({
+    mealTimeId: undefined,
+    date: undefined,
+  });
+  const handleToggleReserveModal = (mealTimeId: string, date: string) => {
+    setCurrentMenuItems({
+      date,
+      mealTimeId,
+    });
     onOpen();
   };
+
   const { user } = useContext(UserContext);
+  const { panelValues } = useContext(PanelContext);
+  const selectedMenuItems =
+    currentMenuItems.date && currentMenuItems.mealTimeId
+      ? panelValues?.menus
+          ?.filter(
+            (menu) =>
+              menu.mealTimes?._id === currentMenuItems.mealTimeId &&
+              menu.date === currentMenuItems.date,
+          )
+          .map((menu) => {
+            menu.isReserved = !!panelValues.reserveds?.find(
+              (reserved) =>
+                reserved.menu._id === menu._id &&
+                reserved.menu.date === currentMenuItems.date &&
+                reserved.menu.mealTimes === currentMenuItems.mealTimeId &&
+                reserved.user._id === user?.user?.id,
+            );
+            menu.userId = user?.user?.id;
+            return menu;
+          })
+      : [];
   const renderTableBody = () => {
     const now = moment().locale("fa");
+    const nowDate = now.format("jYYYY/jMM/jDD");
     const startOfWeek = now.clone().startOf("week");
     const endOfWeek = now.clone().endOf("week");
 
@@ -59,7 +92,12 @@ const PanelReserveState = ({
         {days.map((day) => {
           return (
             <Tr>
-              <Td fontSize="15">{day.title}</Td>
+              <Td
+                fontSize="15"
+                bg={day.date === nowDate ? "linkedin.50" : "white"}
+              >
+                {day.title}
+              </Td>
               {mealTimes?.map((mealTime) => {
                 const isAvailable = menus?.some(
                   (menu) =>
@@ -89,26 +127,7 @@ const PanelReserveState = ({
                           colorScheme="blue"
                           variant="unstyled"
                           onClick={() =>
-                            handleToggleReserveModal(
-                              menus
-                                ?.filter(
-                                  (menu) =>
-                                    day.date === menu.date &&
-                                    menu.mealTimes?._id === mealTime._id,
-                                )
-                                .map((menu) => {
-                                  menu.isReserved =
-                                    menu.date === day.date &&
-                                    menu.mealTimes?._id === mealTime._id &&
-                                    !!reserveds?.find(
-                                      (reserve) =>
-                                        reserve.menu._id === menu._id,
-                                    );
-
-                                  menu.userId = user?.user?.id;
-                                  return menu;
-                                }),
-                            )
+                            handleToggleReserveModal(mealTime._id, day.date)
                           }
                         >
                           <FiEye fontSize={15} />

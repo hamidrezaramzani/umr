@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { AiOutlineBarcode } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { reserveMenuItemRequest } from "../../../api/reserve/reserve";
+import { PanelContext } from "../../../context/PanelProvider";
 import { UserContext } from "../../../context/UserProvider";
 import { getImageAddress } from "../../../helpers/getImageAddress";
 import { IExtraMeal } from "../../../pages/Admin/ManageExtraMeals/ManageExtraMeals";
@@ -21,6 +22,7 @@ import PanelQRCode from "../PanelQRCode/PanelQRCode";
 interface PanelStatusItemProps {
   menuId?: string;
   title?: string;
+  mealTimeId?: string;
   type?: string;
   extra?: IExtraMeal[];
   image?: string;
@@ -33,12 +35,16 @@ const PanelStatusItem = ({
   image,
   menuId,
   isReserved,
+  mealTimeId,
 }: PanelStatusItemProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
+  const { setReserve } = useContext(PanelContext);
   const handleReserveMenuItem = async () => {
     try {
-      await reserveMenuItemRequest(menuId!);
+      const { data } = await reserveMenuItemRequest(menuId!, mealTimeId!);
+      toast.success("رزرو با موفقیت انجام شد");
+      setReserve(data);
     } catch (error) {
       toast.error("مشکلی در سمت سرور وجود دارد مجددا بعدا امتحان کنید");
     }
@@ -49,7 +55,12 @@ const PanelStatusItem = ({
   };
   return (
     <Tooltip label={type} hasArrow placement="top-start">
-      <HStack justify="space-between" alignContent="space-between" width="100%" mb="3">
+      <HStack
+        justify="space-between"
+        alignContent="space-between"
+        width="100%"
+        mb="3"
+      >
         <PanelQRCode
           id={menuId}
           userId={user?.user?.id}

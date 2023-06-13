@@ -69,7 +69,6 @@ const ManageStudentsPage = () => {
     } else {
       toast.error("خطایی پیش آمده. لطفا بعدا مجدد امتحان کنید");
     }
-    console.log(id);
   };
 
   const handleEditStudent = (id: string) => {

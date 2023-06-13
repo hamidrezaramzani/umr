@@ -46,7 +46,6 @@ const MealTimeFormPage = () => {
         const {
           data: { title },
         } = await getSingleMealTimeRequest(mealTimeId);
-        console.log(title);
         
         setValue("title", title);
       } catch (error) {

@@ -12,7 +12,7 @@ import PanelStatusItem from "../../PanelStatus/PanelStatusItem";
 interface PanelReserveModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedMenuItems: IMenuItem[];
+  selectedMenuItems?: IMenuItem[];
   userId?: string;
 }
 const PanelReserveModal = ({
@@ -26,7 +26,7 @@ const PanelReserveModal = ({
       <ModalContent>
         <ModalHeader>رزرو غذا</ModalHeader>
         <ModalBody>
-          {selectedMenuItems.map((menu) => (
+          {selectedMenuItems?.map((menu) => (
             <PanelStatusItem
               key={menu._id}
               menuId={menu._id}
@@ -35,7 +35,7 @@ const PanelReserveModal = ({
               image={menu.meal?.image}
               type={menu.mealTimes?.title}
               isReserved={menu.isReserved}
-              userId={menu.userId}
+              mealTimeId={menu.mealTimes?._id}
             />
           ))}
         </ModalBody>

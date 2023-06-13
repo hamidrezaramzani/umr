@@ -8,6 +8,7 @@
   },
   "extends": ["eslint:recommended"],
   "rules": {
+    "no-undef-init": "error",
     "no-console": "error",
     "no-debugger": "error",
     "no-unused-vars": [

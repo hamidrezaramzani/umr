@@ -8,7 +8,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.get("/reserve-menu/:id", authMiddleware("student"), reserveMenuItem);
+router.get("/reserve-menu/:id/:mealTimeId", authMiddleware("student"), reserveMenuItem);
 router.get("/all", authMiddleware("student"), getAllReserved);
 router.get("/today", authMiddleware("student"), getTodayReserves);
 module.exports = router;

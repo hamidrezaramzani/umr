@@ -103,7 +103,6 @@ const MealFormPage = () => {
     }
   }, []);
 
-  console.log(errors);
   const [loading, setLoading] = useState<boolean>();
   const handleSubmitForm = async (values: MealFormValues) => {
     try {
@@ -124,13 +123,11 @@ const MealFormPage = () => {
       navigate("/admin/manage-meals");
       setLoading(false);
     } catch (error) {
-      console.log(error);
       setLoading(false);
       toast.error("خطایی در سرور پیش آمده مجدد امتحان کنید");
     }
   };
 
-  console.log(getImageAddress(image));
 
   return (
     <AdminDashboardContainer

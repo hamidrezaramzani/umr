@@ -1,26 +1,17 @@
-import { HStack, VStack, Text, Tag, Button } from "@chakra-ui/react";
-import { HiOutlineChevronDown } from "react-icons/hi";
+import { HStack, VStack, Text, Button } from "@chakra-ui/react";
 import PanelStatusItem from "./PanelStatusItem";
 import * as moment from "jalali-moment";
-import { useEffect, useState } from "react";
 import { IReserve } from "../../../pages/Panel/PanelPage";
-import { getTodayRerservesRequest } from "../../../api/reserve/reserve";
-const PanelStatus = () => {
-  const [todayReserves, setTodayReserved] = useState<IReserve[]>([]);
+
+interface PanelStatusProps {
+  todayReserves?: IReserve[];
+}
+const PanelStatus = ({ todayReserves }: PanelStatusProps) => {
   const todayDate = moment(new Date().toISOString())
     .locale("fa")
     .format("jYYYY/jMM/jDD");
-  useEffect(() => {
-    const getTodayReserves = async () => {
-      const { data } = await getTodayRerservesRequest();
-      console.log(data);
-
-      setTodayReserved(data);
-    };
-    getTodayReserves();
-  }, []);
   const renderTodayFoods = () => {
-    return todayReserves.length ? (
+    return todayReserves?.length ? (
       todayReserves.map((reserve) => (
         <PanelStatusItem
           menuId={reserve.menu._id}
@@ -29,6 +20,7 @@ const PanelStatus = () => {
           isReserved={true}
           image={reserve.menu.meal?.image}
           title={reserve.menu.meal?.name}
+          mealTimeId={reserve.menu.mealTimes?._id}
         />
       ))
     ) : (
