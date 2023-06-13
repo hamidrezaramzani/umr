@@ -23,5 +23,5 @@ To run this application locally, you will need to have NodeJS and Git installed 
 - NodeJS
 - ExpressJS
 - MongoDB
-- Bootstrap
+- ChakraUI
 - Axios
