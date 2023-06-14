@@ -1,4 +1,14 @@
-import { HStack, VStack, Text, Button } from "@chakra-ui/react";
+import {
+  HStack,
+  VStack,
+  Text,
+  Button,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
 import PanelStatusItem from "./PanelStatusItem";
 import * as moment from "jalali-moment";
 import { IReserve } from "../../../pages/Panel/PanelPage";
@@ -30,6 +40,14 @@ const PanelStatus = ({ todayReserves }: PanelStatusProps) => {
       </HStack>
     );
   };
+
+  const renderTodaySales = () => {
+    return (
+      <HStack height="300px" width="100%" justify="center">
+        <Text>غذایی در امروز برای فروش وجود ندارد</Text>
+      </HStack>
+    );
+  };
   return (
     <VStack
       height="auto"
@@ -40,15 +58,37 @@ const PanelStatus = ({ todayReserves }: PanelStatusProps) => {
       bg="#fff"
       p="5"
     >
-      <HStack width="100%">
-        <HStack justify="space-between" color="gray.600" width="100%">
-          <Text>رزرو شده ها</Text>{" "}
-          <Button size="xs" colorScheme="blue">
-            {todayDate}&nbsp;
-          </Button>
-        </HStack>
-      </HStack>
-      {renderTodayFoods()}
+      <Tabs width="100%">
+        <TabList>
+          <Tab>رزرو امروز</Tab>
+          <Tab>فروش</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel width="100%">
+            <HStack width="100%">
+              <HStack justify="space-between" color="gray.600" width="100%">
+                <Text>رزرو شده ها</Text>{" "}
+                <Button size="xs" colorScheme="blue">
+                  {todayDate}&nbsp;
+                </Button>
+              </HStack>
+            </HStack>
+            {renderTodayFoods()}
+          </TabPanel>
+          <TabPanel width="100%">
+            <HStack width="100%">
+              <HStack justify="space-between" color="gray.600" width="100%">
+                <Text>فروش امروز</Text>{" "}
+                <Button size="xs" colorScheme="blue">
+                  {todayDate}&nbsp;
+                </Button>
+              </HStack>
+            </HStack>
+            {renderTodaySales()}
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </VStack>
   );
 };
