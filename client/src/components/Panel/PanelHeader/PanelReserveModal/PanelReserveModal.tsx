@@ -38,6 +38,7 @@ const PanelReserveModal = ({
               isReserved={menu.isReserved}
               mealTimeId={menu.mealTimes?._id}
               price={menu.meal?.price}
+              reservationDateRange={menu.reservationDateRange}
             />
           ))}
         </ModalBody>

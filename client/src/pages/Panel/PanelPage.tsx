@@ -23,6 +23,7 @@ export interface IMenuItem {
   extraMeals?: IExtraMeal[];
   isReserved?: boolean;
   userId?: string;
+  reservationDateRange?: string[];
 }
 
 export interface IUser {

@@ -55,6 +55,10 @@ export const wordBook = {
             }
         },
         menu: {
+            reservationDateRange: {
+                fa: "دامنه مجاز رزرو",
+                en: "Reservation Date Range"
+            },
             date: {
                 fa: "تاریخ",
                 en: "Date"

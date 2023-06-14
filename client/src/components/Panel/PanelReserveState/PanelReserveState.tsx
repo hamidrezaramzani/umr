@@ -78,6 +78,10 @@ const PanelReserveState = ({
   const handleSubtractToWeekIndex = () => {
     setWeekIndex((prevIndex) => (prevIndex -= 1));
   };
+
+  const handleResetWeekIndex = () => {
+    setWeekIndex(0);
+  };
   const renderTableBody = () => {
     const now = moment().locale("fa");
     const nowDate = now.format("jYYYY/jMM/jDD");
@@ -171,6 +175,15 @@ const PanelReserveState = ({
         </Heading>
         <Button size="xs" colorScheme="blue" onClick={handleAddToWeekIndex}>
           هفته بعدی
+          <MdChevronRight />
+        </Button>
+        <Button
+          size="xs"
+          colorScheme="orange"
+          px="2"
+          onClick={handleResetWeekIndex}
+        >
+          هفته فعلی
           <MdChevronRight />
         </Button>
         <Button

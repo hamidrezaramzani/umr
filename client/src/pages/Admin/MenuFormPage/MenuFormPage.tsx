@@ -26,6 +26,7 @@ import FormErrorMessage from "../../../components/FormErrorMessage/FormErrorMess
 import { convertPersianNumberToEnglishNumber } from "../../../helpers/convertPersianNumberToEnglishNumber";
 import { useNavigate } from "react-router";
 export interface MenuFormValues {
+  reservationDateRange: string[];
   date: string;
   meal: string;
   mealTimes: string;
@@ -42,6 +43,12 @@ const MenuFormPage = () => {
     useState<IMenuFormValues>({});
   const [loading, setLoading] = useState(false);
   const schema = Yup.object().shape({
+    reservationDateRange: Yup.array(Yup.string()).required(
+      wordBook.format(
+        wordBook.fields.menu.reservationDateRange.fa,
+        wordBook.messages.validation.required.fa,
+      ),
+    ),
     date: Yup.string().required(
       wordBook.format(
         wordBook.fields.menu.date.fa,
@@ -104,10 +111,37 @@ const MenuFormPage = () => {
     }
   };
 
-
   return (
     <AdminDashboardContainer title="اضافه کردن آیتم منو">
       <form onSubmit={handleSubmit(handleSubmitForm)}>
+        <FormControl mb="3">
+          <FormLabel>دامنه مجاز رزرو</FormLabel>
+          <DatePicker
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              border: "1px solid #CBD5E0",
+              height: "40px",
+            }}
+            containerStyle={{
+              width: "100%",
+            }}
+            range
+            calendarPosition="bottom-center"
+            calendar={persian}
+            locale={persian_fa}
+            onChange={([start, end]: any[]) => {
+              setValue("reservationDateRange", [
+                convertPersianNumberToEnglishNumber(String(start?.toString())),
+                convertPersianNumberToEnglishNumber(String(end?.toString())),
+              ]);
+            }}
+          />
+          <FormErrorMessage>
+            {errors.reservationDateRange?.message}
+          </FormErrorMessage>
+        </FormControl>
+
         <FormControl mb="3">
           <FormLabel>تاریخ</FormLabel>
           <DatePicker
@@ -132,7 +166,6 @@ const MenuFormPage = () => {
           />
           <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
         </FormControl>
-
         <Controller
           control={control}
           name="meal"

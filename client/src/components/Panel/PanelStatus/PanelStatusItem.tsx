@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Tooltip,
   HStack,
@@ -8,7 +9,6 @@ import {
   Badge,
   Box,
   useDisclosure,
-  Text,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { AiOutlineBarcode } from "react-icons/ai";
@@ -19,7 +19,7 @@ import { UserContext } from "../../../context/UserProvider";
 import { getImageAddress } from "../../../helpers/getImageAddress";
 import { IExtraMeal } from "../../../pages/Admin/ManageExtraMeals/ManageExtraMeals";
 import PanelQRCode from "../PanelQRCode/PanelQRCode";
-
+import * as moment from "jalali-moment";
 interface PanelStatusItemProps {
   menuId?: string;
   title?: string;
@@ -29,6 +29,7 @@ interface PanelStatusItemProps {
   image?: string;
   price?: string;
   isReserved?: boolean;
+  reservationDateRange?: string[];
 }
 const PanelStatusItem = ({
   title,
@@ -39,6 +40,7 @@ const PanelStatusItem = ({
   isReserved,
   mealTimeId,
   price,
+  reservationDateRange,
 }: PanelStatusItemProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
@@ -73,6 +75,16 @@ const PanelStatusItem = ({
 
   const handleToggleShowBarcode = () => {
     onOpen();
+  };
+
+  const checkIfTodayIsBetweenReservationDateRange = () => {
+    const startDate = moment(reservationDateRange![0], "jYYYY/jMM/jDD");
+    const endDate = moment(reservationDateRange![1], "jYYYY/jMM/jDD");
+    const dateToCheck = moment(
+      moment().locale("fa").format("jYYYY/jMM/jDD"),
+      "jYYYY/jMM/jDD",
+    );
+    return dateToCheck.isBetween(startDate, endDate);
   };
   return (
     <Tooltip label={type} hasArrow placement="top-start">
@@ -124,16 +136,27 @@ const PanelStatusItem = ({
           >
             <AiOutlineBarcode fontSize="25px" color="#686868" />
           </Button>
-        ) : (
+        ) : !checkIfTodayIsBetweenReservationDateRange() ? (
           <Button
             variant="solid"
             colorScheme="blue"
-            size="sm"
+            size="xs"
             onClick={handleReserveMenuItem}
             disabled={isDisable}
           >
             رزرو
           </Button>
+        ) : (
+          <Tooltip label="شما در بازه زمانی مجاز جهت رزرو نیستید">
+            <Button
+              variant="solid"
+              colorScheme="red"
+              size="xs"
+              disabled={isDisable}
+            >
+              غیر قابل رزرو
+            </Button>
+          </Tooltip>
         )}
       </HStack>
     </Tooltip>

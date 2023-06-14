@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const MenuSchema = new Schema(
   {
+    reservationDateRange: [{ type: String }],
     date: {
       type: String,
       required: true,
