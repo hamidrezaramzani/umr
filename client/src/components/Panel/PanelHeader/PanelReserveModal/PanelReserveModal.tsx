@@ -14,6 +14,7 @@ interface PanelReserveModalProps {
   onClose: () => void;
   selectedMenuItems?: IMenuItem[];
   userId?: string;
+  isCurrentWeek?: false;
 }
 const PanelReserveModal = ({
   isOpen,

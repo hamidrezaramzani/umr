@@ -48,6 +48,7 @@ const PanelReserveState = ({
   };
 
   const { user } = useContext(UserContext);
+  const [weekIndex, setWeekIndex] = useState(0);
   const { panelValues } = useContext(PanelContext);
   const selectedMenuItems =
     currentMenuItems.date && currentMenuItems.mealTimeId
@@ -69,12 +70,22 @@ const PanelReserveState = ({
             return menu;
           })
       : [];
+
+  const handleAddToWeekIndex = () => {
+    setWeekIndex((prevIndex) => (prevIndex += 1));
+  };
+
+  const handleSubtractToWeekIndex = () => {
+    setWeekIndex((prevIndex) => (prevIndex -= 1));
+  };
   const renderTableBody = () => {
     const now = moment().locale("fa");
     const nowDate = now.format("jYYYY/jMM/jDD");
-    const startOfWeek = now.clone().startOf("week");
-    const endOfWeek = now.clone().endOf("week");
-
+    const startOfWeek = now.clone().add(weekIndex, "week").startOf("week");
+    const endOfWeek = now.clone().add(weekIndex, "week").endOf("week");
+    console.log(
+      now.clone().add(1, "week").startOf("week").format("jYYYY/jMM/jDD"),
+    );
     const days = [];
     for (
       let day = startOfWeek;
@@ -158,11 +169,15 @@ const PanelReserveState = ({
         <Heading color="gray.700" fontSize="20" width="100%">
           وضعیت رزرو این هفته
         </Heading>
-        <Button size="xs" colorScheme="blue">
+        <Button size="xs" colorScheme="blue" onClick={handleAddToWeekIndex}>
           هفته بعدی
           <MdChevronRight />
         </Button>
-        <Button colorScheme="blue" size="xs">
+        <Button
+          colorScheme="blue"
+          size="xs"
+          onClick={handleSubtractToWeekIndex}
+        >
           هفته قبلی
           <MdChevronRight />
         </Button>
