@@ -64,14 +64,7 @@ const PanelPage = () => {
   }, []);
 
   return (
-    <HStack
-      width="100%"
-      position="relative"
-      align="start"
-      p="8"
-      height="100vh"
-      bg="#eee"
-    >
+    <HStack width="100%" position="relative" align="start" p="8" bg="#eee">
       <VStack zIndex={10} justify="center" width="100%">
         <PanelHeader />
         {loading ? (
@@ -84,19 +77,26 @@ const PanelPage = () => {
             flexDirection={["column", "row"]}
             alignItems="start"
             justify="center"
+            flexWrap="wrap"
           >
-            <VStack width="20%">
+            <VStack width={["100%", "20%"]}>
               <PanelStatus todayReserves={todayReserves} />
               <PanelFoodVote />
             </VStack>
-            <VStack width={"50%"} p="5" bg="white" height="auto" rounded="md">
+            <VStack
+              width={["100%", "50%"]}
+              p="5"
+              bg="white"
+              height="auto"
+              rounded="md"
+            >
               <PanelReserveState
                 menus={menus}
                 mealTimes={mealTimes}
                 reserveds={reserveds}
               />
             </VStack>
-            <VStack width="20%" height="80vh">
+            <VStack width={["100%", "20%"]} height="80vh">
               <PanelCart />
               <PanelTransactions transactions={transactions} />
             </VStack>

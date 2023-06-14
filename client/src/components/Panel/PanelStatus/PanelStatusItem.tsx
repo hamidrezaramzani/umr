@@ -8,6 +8,7 @@ import {
   Badge,
   Box,
   useDisclosure,
+  Text,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { AiOutlineBarcode } from "react-icons/ai";
@@ -26,6 +27,7 @@ interface PanelStatusItemProps {
   type?: string;
   extra?: IExtraMeal[];
   image?: string;
+  price?: string;
   isReserved?: boolean;
 }
 const PanelStatusItem = ({
@@ -36,6 +38,7 @@ const PanelStatusItem = ({
   menuId,
   isReserved,
   mealTimeId,
+  price,
 }: PanelStatusItemProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
@@ -57,8 +60,11 @@ const PanelStatusItem = ({
         },
       },
       error: {
-        render() {
+        render({ data }: any) {
           setisDisable(false);
+          if (data.response.status === 422) {
+            return "موجودی کافی نمی باشد";
+          }
           return "خطایی در ثبت رزرو غذا رخ داده است. لطفا مجدد امتحان کنید";
         },
       },
@@ -93,9 +99,14 @@ const PanelStatusItem = ({
           rounded="md"
         />
         <VStack width="70%" alignItems="start" gap="3">
-          <Heading fontSize="15" textAlign="right" color="gray.600">
-            {title}
-          </Heading>
+          <HStack>
+            <Heading fontSize="15" textAlign="right" color="gray.600">
+              {title}
+            </Heading>
+            <Badge colorScheme="green" fontSize="10">
+              {price} تومان
+            </Badge>
+          </HStack>
           <HStack width="100%" justify="start">
             {extra?.map((item) => (
               <Badge size="xs" colorScheme="blue">

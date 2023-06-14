@@ -21,6 +21,7 @@ const PanelStatus = ({ todayReserves }: PanelStatusProps) => {
           image={reserve.menu.meal?.image}
           title={reserve.menu.meal?.name}
           mealTimeId={reserve.menu.mealTimes?._id}
+          price={reserve.menu.meal?.price}
         />
       ))
     ) : (
