@@ -21,17 +21,25 @@ const PanelStatus = ({ todayReserves }: PanelStatusProps) => {
     .locale("fa")
     .format("jYYYY/jMM/jDD");
   const renderTodayFoods = () => {
-    return todayReserves?.length ? (
-      todayReserves.map((reserve) => (
+    const filteredReserves = todayReserves?.filter(
+      (reserve) => !reserve.isMovedToSale,
+    );
+
+    return filteredReserves?.length ? (
+      filteredReserves.map((reserve) => (
         <PanelStatusItem
+          key={reserve._id}
+          isTodayReserve={true}
+          isReserved={true}
+          reserveId={reserve._id}
           menuId={reserve.menu._id}
           type={reserve.menu.mealTimes?.title}
           extra={reserve.menu.extraMeals}
-          isReserved={true}
           image={reserve.menu.meal?.image}
           title={reserve.menu.meal?.name}
           mealTimeId={reserve.menu.mealTimes?._id}
           price={reserve.menu.meal?.price}
+          isForSale={false}
         />
       ))
     ) : (
@@ -42,18 +50,39 @@ const PanelStatus = ({ todayReserves }: PanelStatusProps) => {
   };
 
   const renderTodaySales = () => {
-    return (
+    const filteredReserves = todayReserves?.filter(
+      (reserve) => reserve.isMovedToSale,
+    );
+    return filteredReserves?.length ? (
+      filteredReserves.map((reserve) => (
+        <PanelStatusItem
+          key={reserve._id}
+          isTodayReserve={true}
+          isReserved={true}
+          reserveId={reserve._id}
+          menuId={reserve.menu._id}
+          type={reserve.menu.mealTimes?.title}
+          extra={reserve.menu.extraMeals}
+          image={reserve.menu.meal?.image}
+          title={reserve.menu.meal?.name}
+          mealTimeId={reserve.menu.mealTimes?._id}
+          price={reserve.menu.meal?.price}
+          isForSale={true}
+        />
+      ))
+    ) : (
       <HStack height="300px" width="100%" justify="center">
-        <Text>غذایی در امروز برای فروش وجود ندارد</Text>
+        <Text>برای امروز فروشی ندارید</Text>
       </HStack>
     );
   };
+
   return (
     <VStack
       height="auto"
       justify="center"
       rounded="md"
-      width="full"
+      width="100%"
       gap="5"
       bg="#fff"
       p="5"
@@ -61,7 +90,7 @@ const PanelStatus = ({ todayReserves }: PanelStatusProps) => {
       <Tabs width="100%">
         <TabList>
           <Tab>رزرو امروز</Tab>
-          <Tab>فروش</Tab>
+          <Tab>فروش های من</Tab>
         </TabList>
 
         <TabPanels>

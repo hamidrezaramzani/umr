@@ -17,7 +17,7 @@ interface PanelTransactionProps {
 const PanelTransactions = ({ transactions }: PanelTransactionProps) => {
   const renderTransactions = () => {
     return transactions?.map((transaction) => (
-      <PanelTransactionItem {...transaction} />
+      <PanelTransactionItem key={transaction._id} {...transaction} />
     ));
   };
   return (

@@ -1,43 +1,52 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from "react";
 import { ITransaction } from "../components/Panel/PanelTransactions/PanelTransactions";
 import { IMealTime } from "../pages/Admin/ManageMealTimes/ManageMealTimesForm";
 import { IMenuItem, IReserve, IUser } from "../pages/Panel/PanelPage";
 
+export interface ISale {
+  _id: string;
+  user: IUser;
+  menu: IMenuItem;
+}
 export interface IPanelValues {
   user?: IUser;
   menus?: IMenuItem[];
   mealTimes?: IMealTime[];
   reserveds?: IReserve[];
   todayReserves?: IReserve[];
+  todaySales?: ISale[];
   transactions?: ITransaction[];
 }
 
 interface PanelContextProps {
   panelValues: IPanelValues;
-  setReserve: (data: IPanelValues) => void;
+  setPanelValues: (data: IPanelValues) => void;
   initialValues: (values: IPanelValues) => void;
 }
 export const PanelContext = React.createContext<PanelContextProps>({
   panelValues: {},
-  setReserve: (data: IPanelValues) => {},
-  initialValues(values: IPanelValues) {},
+  setPanelValues: (_data: IPanelValues) => {},
+  initialValues(_values: IPanelValues) {},
 });
 
 interface PanelProviderProps {
   children: React.ReactNode;
 }
 const PanelProvider = ({ children }: PanelProviderProps) => {
-  const [panelValues, setPanelValues] = React.useState({});
+  const [panelValues, setPanelValuesData] = React.useState({});
 
   const initialValues = (values: IPanelValues) => {
-    setPanelValues(values);
+    setPanelValuesData(values);
   };
-  const setReserve = (data: IPanelValues) => {
-    setPanelValues(data);
+  const setPanelValues = (data: IPanelValues) => {
+    setPanelValuesData(data);
   };
   return (
-    <PanelContext.Provider value={{ panelValues, setReserve, initialValues }}>
+    <PanelContext.Provider
+      value={{ panelValues, setPanelValues, initialValues }}
+    >
       {children}
     </PanelContext.Provider>
   );

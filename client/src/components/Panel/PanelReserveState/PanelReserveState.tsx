@@ -11,6 +11,7 @@ import {
   Text,
   HStack,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
 import * as moment from "jalali-moment";
@@ -87,9 +88,6 @@ const PanelReserveState = ({
     const nowDate = now.format("jYYYY/jMM/jDD");
     const startOfWeek = now.clone().add(weekIndex, "week").startOf("week");
     const endOfWeek = now.clone().add(weekIndex, "week").endOf("week");
-    console.log(
-      now.clone().add(1, "week").startOf("week").format("jYYYY/jMM/jDD"),
-    );
     const days = [];
     for (
       let day = startOfWeek;
@@ -163,54 +161,63 @@ const PanelReserveState = ({
     );
   };
   return (
-    <TableContainer width="100%">
-      <PanelReserveModal
-        isOpen={isOpen}
-        onClose={onClose}
-        selectedMenuItems={selectedMenuItems}
-      />
-      <HStack justify="center">
-        <Heading color="gray.700" fontSize="20" width="100%">
-          وضعیت رزرو این هفته
-        </Heading>
-        <Button size="xs" colorScheme="blue" onClick={handleAddToWeekIndex}>
-          هفته بعدی
-          <MdChevronRight />
-        </Button>
-        <Button
-          size="xs"
-          colorScheme="orange"
-          px="2"
-          onClick={handleResetWeekIndex}
-        >
-          هفته فعلی
-          <MdChevronRight />
-        </Button>
-        <Button
-          colorScheme="blue"
-          size="xs"
-          onClick={handleSubtractToWeekIndex}
-        >
-          هفته قبلی
-          <MdChevronRight />
-        </Button>
-      </HStack>
-      <Text mt="2" fontSize="14" color="gray.500">
-        اینجا شما میتوانید وضعیت رزرو این هفته رو ببینید و همچنین برای این هفته
-        رو رزرو کنید
-      </Text>
-      <Table size="md" textAlign="center" colorScheme="blue">
-        <Thead>
-          <Tr>
-            <Th>تاریخ</Th>
-            {mealTimes?.map((mealTime) => (
-              <Th>{mealTime.title}</Th>
-            ))}
-          </Tr>
-        </Thead>
-        {renderTableBody()}
-      </Table>
-    </TableContainer>
+    <VStack
+      // style={{ width: "100%" }}
+      width="100%"
+      p="5"
+      bg="white"
+      height="auto"
+      rounded="md"
+    >
+      <TableContainer width="100%">
+        <PanelReserveModal
+          isOpen={isOpen}
+          onClose={onClose}
+          selectedMenuItems={selectedMenuItems}
+        />
+        <HStack justify="center">
+          <Heading color="gray.700" fontSize="20" width="100%">
+            وضعیت رزرو این هفته
+          </Heading>
+          <Button size="xs" colorScheme="blue" onClick={handleAddToWeekIndex}>
+            هفته بعدی
+            <MdChevronRight />
+          </Button>
+          <Button
+            size="xs"
+            colorScheme="orange"
+            px="2"
+            onClick={handleResetWeekIndex}
+          >
+            هفته فعلی
+            <MdChevronRight />
+          </Button>
+          <Button
+            colorScheme="blue"
+            size="xs"
+            onClick={handleSubtractToWeekIndex}
+          >
+            هفته قبلی
+            <MdChevronRight />
+          </Button>
+        </HStack>
+        <Text mt="2" fontSize="14" color="gray.500">
+          اینجا شما میتوانید وضعیت رزرو این هفته رو ببینید و همچنین برای این
+          هفته رو رزرو کنید
+        </Text>
+        <Table size="md" textAlign="center" colorScheme="blue">
+          <Thead>
+            <Tr>
+              <Th>تاریخ</Th>
+              {mealTimes?.map((mealTime) => (
+                <Th>{mealTime.title}</Th>
+              ))}
+            </Tr>
+          </Thead>
+          {renderTableBody()}
+        </Table>
+      </TableContainer>
+    </VStack>
   );
 };
 

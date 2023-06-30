@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const ReserveSchema = new Schema(
+const SaleSchema = new Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,7 +12,7 @@ const ReserveSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Menu",
     },
-    isMovedToSale: {
+    isSoldOut: {
       type: Boolean,
       default: false,
     },
@@ -20,5 +20,4 @@ const ReserveSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports =
-  mongoose.models.Reserve || mongoose.model("Reserve", ReserveSchema);
+module.exports = mongoose.models.Sale || mongoose.model("Sale", SaleSchema);

@@ -20,7 +20,7 @@ import { IPanelValues, PanelContext } from "../../../context/PanelProvider";
 import * as moment from "jalali-moment";
 const PanelCart = () => {
   const AVAILABLE_ACCOUNT_BALANCE_VALUES = [5000, 10000, 25000, 50000];
-  const { setReserve, panelValues } = useContext(PanelContext);
+  const { setPanelValues, panelValues } = useContext(PanelContext);
 
   const currentDate = moment(new Date().toISOString())
     .locale("fa")
@@ -34,7 +34,7 @@ const PanelCart = () => {
       },
       success: {
         render({ data: { data } }: { data: { data: IPanelValues } }) {
-          setReserve(data);
+          setPanelValues(data);
           return "شارژ حساب با موفقیت انجام شد";
         },
       },

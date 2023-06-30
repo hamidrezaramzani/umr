@@ -82,6 +82,12 @@ export const wordBook = {
                 fa: "%s نمیتواند خالی باشد",
                 en: "%s can not be empty"
             }
+        },
+        errors: {
+            serverInternalError: {
+                fa: "مشکلی در سرور وجود دارد. لطفا دوباره مجدد امتحان کنید",
+                en: "we have an error on server, please try again"
+            },
         }
     },
     format: (name: string, message: string) => {

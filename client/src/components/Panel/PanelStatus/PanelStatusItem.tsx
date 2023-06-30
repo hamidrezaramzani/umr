@@ -20,6 +20,9 @@ import { getImageAddress } from "../../../helpers/getImageAddress";
 import { IExtraMeal } from "../../../pages/Admin/ManageExtraMeals/ManageExtraMeals";
 import PanelQRCode from "../PanelQRCode/PanelQRCode";
 import * as moment from "jalali-moment";
+import { wordBook } from "../../../helpers/wordBook";
+import { TbShoppingCartOff, TbShoppingCartPlus } from "react-icons/tb";
+import PanelSalesModal from "../PanelSalesModal/PanelSalesModal";
 interface PanelStatusItemProps {
   menuId?: string;
   title?: string;
@@ -29,7 +32,10 @@ interface PanelStatusItemProps {
   image?: string;
   price?: string;
   isReserved?: boolean;
+  isTodayReserve?: boolean;
   reservationDateRange?: string[];
+  isForSale: boolean;
+  reserveId?: string;
 }
 const PanelStatusItem = ({
   title,
@@ -41,11 +47,19 @@ const PanelStatusItem = ({
   mealTimeId,
   price,
   reservationDateRange,
+  isForSale,
+  reserveId,
 }: PanelStatusItemProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenSalesModal,
+    onOpen: onOpenSalesModal,
+    onClose: onCloseSalesModal,
+  } = useDisclosure();
   const { user } = useContext(UserContext);
   const [isDisable, setisDisable] = useState<boolean>(false);
-  const { setReserve } = useContext(PanelContext);
+  const [isCancelled, setCancelled] = useState<boolean>(false);
+  const { setPanelValues } = useContext(PanelContext);
   const handleReserveMenuItem = async () => {
     toast.promise(() => reserveMenuItemRequest(menuId!, mealTimeId!), {
       pending: {
@@ -57,7 +71,7 @@ const PanelStatusItem = ({
       success: {
         render({ data: { data } }: { data: { data: IPanelValues } }) {
           setisDisable(false);
-          setReserve(data);
+          setPanelValues(data);
           return "رزرو غذا با موفقیت انجام شد";
         },
       },
@@ -67,7 +81,7 @@ const PanelStatusItem = ({
           if (data.response.status === 422) {
             return "موجودی کافی نمی باشد";
           }
-          return "خطایی در ثبت رزرو غذا رخ داده است. لطفا مجدد امتحان کنید";
+          return wordBook.messages.errors.serverInternalError.fa;
         },
       },
     });
@@ -86,19 +100,37 @@ const PanelStatusItem = ({
     );
     return dateToCheck.isBetween(startDate, endDate);
   };
+
+  const handelToggleShowSalesModal = () => {
+    onOpenSalesModal();
+  };
   return (
     <Tooltip label={type} hasArrow placement="top-start">
       <HStack
         justify="space-between"
         alignContent="space-between"
         width="100%"
-        mb="3"
+        my="3"
       >
         <PanelQRCode
           id={menuId}
           userId={user?.user?.id}
           isOpen={isOpen}
           onClose={onClose}
+        />
+        <PanelSalesModal
+          isOpen={isOpenSalesModal}
+          isCancelled={isCancelled}
+          onClose={onCloseSalesModal}
+          item={{
+            reserveId,
+            title,
+            type,
+            extra,
+            image,
+            price,
+            isForSale: true,
+          }}
         />
         <Image
           src={getImageAddress(image!)}
@@ -111,14 +143,6 @@ const PanelStatusItem = ({
           rounded="md"
         />
         <VStack width="70%" alignItems="start" gap="3">
-          <HStack>
-            <Heading fontSize="15" textAlign="right" color="gray.600">
-              {title}
-            </Heading>
-            <Badge colorScheme="green" fontSize="10">
-              {price} تومان
-            </Badge>
-          </HStack>
           <HStack width="100%" justify="start">
             {extra?.map((item) => (
               <Badge size="xs" colorScheme="blue">
@@ -126,35 +150,80 @@ const PanelStatusItem = ({
               </Badge>
             ))}
           </HStack>
+          <HStack justify="start">
+            <Heading fontSize="15" textAlign="right" color="gray.600">
+              {title}
+            </Heading>
+          </HStack>
+
+          <Badge colorScheme="green" fontSize="10">
+            {isForSale ? Number(price!) * 2 : price} تومان &nbsp;
+            <b>{isForSale ? "برای فروش" : ""}</b>
+          </Badge>
         </VStack>
 
-        {isReserved ? (
-          <Button
-            variant="unstyled"
-            size="sm"
-            onClick={handleToggleShowBarcode}
-          >
-            <AiOutlineBarcode fontSize="25px" color="#686868" />
-          </Button>
-        ) : !checkIfTodayIsBetweenReservationDateRange() ? (
-          <Button
-            variant="solid"
-            colorScheme="blue"
-            size="xs"
-            onClick={handleReserveMenuItem}
-            disabled={isDisable}
-          >
-            رزرو
-          </Button>
-        ) : (
-          <Tooltip label="شما در بازه زمانی مجاز جهت رزرو نیستید">
+        {!isForSale && (
+          <>
+            {isReserved ? (
+              <VStack>
+                <Tooltip label="کیوآرکد">
+                  <Button
+                    variant="unstyled"
+                    size="sm"
+                    onClick={handleToggleShowBarcode}
+                  >
+                    <AiOutlineBarcode fontSize="25px" color="#686868" />
+                  </Button>
+                </Tooltip>
+                <Tooltip label="فروش">
+                  <Button
+                    onClick={() => {
+                      setCancelled(false);
+                      handelToggleShowSalesModal();
+                    }}
+                    variant="unstyled"
+                    size="sm"
+                  >
+                    <TbShoppingCartPlus fontSize="25px" color="#3182ce" />
+                  </Button>
+                </Tooltip>
+              </VStack>
+            ) : checkIfTodayIsBetweenReservationDateRange() ? (
+              <Button
+                variant="solid"
+                colorScheme="blue"
+                size="xs"
+                onClick={handleReserveMenuItem}
+                disabled={isDisable}
+              >
+                رزرو
+              </Button>
+            ) : (
+              <Tooltip label="شما در بازه زمانی مجاز جهت رزرو نیستید">
+                <Button
+                  variant="solid"
+                  colorScheme="red"
+                  size="xs"
+                  disabled={isDisable}
+                >
+                  غیر قابل رزرو
+                </Button>
+              </Tooltip>
+            )}
+          </>
+        )}
+
+        {isForSale && (
+          <Tooltip label="لغو فروش">
             <Button
-              variant="solid"
-              colorScheme="red"
-              size="xs"
-              disabled={isDisable}
+              onClick={() => {
+                setCancelled(true);
+                handelToggleShowSalesModal();
+              }}
+              variant="unstyled"
+              size="sm"
             >
-              غیر قابل رزرو
+              <TbShoppingCartOff fontSize="25px" color="#3182ce" />
             </Button>
           </Tooltip>
         )}
