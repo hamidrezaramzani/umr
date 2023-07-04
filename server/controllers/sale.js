@@ -3,6 +3,7 @@ const Sale = require("../models/Sale");
 const { getPanelValues } = require("../controllers/panel");
 const moment = require("jalali-moment");
 const User = require("../models/User");
+const Transaction = require("../models/Transaction");
 const toggleSale = async (req, res) => {
   try {
     const userId = req.currentUser.id;
@@ -157,6 +158,10 @@ const buySaleItem = async (req, res) => {
         },
       }
     );
+
+    await Transaction.create({
+
+    });
     return await getPanelValues(req, res);
   } catch (error) {
     return res.status(500).json(error);

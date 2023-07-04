@@ -43,6 +43,7 @@ const getPanelValues = async (req, res) => {
     const user = await User.findById(userId);
     const transactions = await Transaction.find({ user: userId })
       .populate("user")
+      .sort({ createdAt: -1 })
       .limit(5);
     const todayReserves = allReserves.filter(
       (reserve) => reserve.menu.date === date

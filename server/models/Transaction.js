@@ -18,7 +18,7 @@ const TransactionSchema = new Schema(
     },
     type: {
       type: String,
-      enums: ["add", "move"],
+      enums: ["add", "move", "subtract"],
     },
   },
   { timestamps: true }
