@@ -1,7 +1,7 @@
 import client from "../client";
 
-export const reserveMenuItemRequest = async (menuId: string, mealTimeId: string) => {
-    return await client.get(`/reserve/reserve-menu/${menuId}/${mealTimeId}`)
+export const reserveMenuItemRequest = async <T>(menuId: string, mealTimeId: string) => {
+    return await client.get<T>(`/reserve/reserve-menu/${menuId}/${mealTimeId}`)
 };
 
 

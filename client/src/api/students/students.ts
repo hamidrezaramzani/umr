@@ -23,6 +23,6 @@ export const editStudentRequest = async (values: AddStudentFormValues, userId: s
     return await client.put(`/student/edit/${userId}`, values);
 }
 
-export const addBalanceRequest = async (value: number) => {
-    return await client.get(`/student/add-balance/${value}`);
+export const addBalanceRequest = async <T>(value: number) => {
+    return await client.get<T>(`/student/add-balance/${value}`);
 }

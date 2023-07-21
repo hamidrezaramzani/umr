@@ -12,7 +12,6 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
-import { AxiosError } from "axios";
 import { useContext } from "react";
 import { toast } from "react-toastify";
 import { buySaleMenuRequest } from "../../../api/sale/sale";
@@ -29,24 +28,20 @@ interface PanelSalesProps {
 const PanelSales = ({ sales }: PanelSalesProps) => {
   const { setPanelValues } = useContext(PanelContext);
   const handleBuyASaleMenuItem = (saleId: string) => {
-    toast.promise(() => buySaleMenuRequest(saleId), {
+    toast.promise(() => buySaleMenuRequest<IPanelValues>(saleId), {
       pending: {
         render: () => {
           return "برای ثبت درخواست خرید این غذا صبر کنید";
         },
       },
       error: {
-        render: ({ data: err }: { data: AxiosError }) => {
-          if (err.response?.status === 400) {
-            return (err.response.data as AxiosError).message;
-          }
-
+        render: () => {
           return wordBook.messages.errors.serverInternalError.fa;
         },
       },
       success: {
-        render: ({ data: { data } }: { data: { data: IPanelValues } }) => {
-          setPanelValues(data);
+        render: (data) => {
+          setPanelValues(data?.data?.data as IPanelValues);
           return "رزرو غذا با موفقیت انجام شد";
         },
       },

@@ -40,10 +40,10 @@ const PanelSalesModal = ({
 }: PanelSalesModalProps) => {
   const { setPanelValues } = useContext(PanelContext);
   const handleToggleSaleMeal = async () => {
-    toast.promise(() => toggleSaleRequest(item.reserveId), {
+    toast.promise(() => toggleSaleRequest<IPanelValues>(item.reserveId), {
       success: {
-        render: ({ data }: { data: IPanelValues }) => {
-          setPanelValues(data);
+        render: (data) => {
+          setPanelValues(data.data?.data as IPanelValues);
           return "انتقال غذا به بخش فروش با موفقیت انجام شد";
         },
       },

@@ -1,9 +1,9 @@
 import client from "../client";
 
-export const toggleSaleRequest = async (reserveId?: string) => {
-    return await client.get(`/sale/toggle/${reserveId}`);
+export const toggleSaleRequest = async <T>(reserveId?: string) => {
+    return await client.get<T>(`/sale/toggle/${reserveId}`);
 };
 
-export const buySaleMenuRequest = async (saleId: string) => {
-    return await client.get(`/sale/buy/${saleId}`);
+export const buySaleMenuRequest = async <T>(saleId: string) => {
+    return await client.get<T>(`/sale/buy/${saleId}`);
 }

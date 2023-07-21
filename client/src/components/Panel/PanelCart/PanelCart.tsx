@@ -26,15 +26,15 @@ const PanelCart = () => {
     .locale("fa")
     .format("jYYYY/jMM/jDD");
   const pay = async (value: number) => {
-    toast.promise(() => addBalanceRequest(value), {
+    toast.promise(() => addBalanceRequest<IPanelValues>(value), {
       pending: {
         render() {
           return "لطفا صبر کنید";
         },
       },
       success: {
-        render({ data: { data } }: { data: { data: IPanelValues } }) {
-          setPanelValues(data);
+        render(data) {
+          setPanelValues(data.data?.data as IPanelValues);
           return "شارژ حساب با موفقیت انجام شد";
         },
       },

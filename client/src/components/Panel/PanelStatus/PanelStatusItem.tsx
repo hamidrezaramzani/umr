@@ -61,30 +61,33 @@ const PanelStatusItem = ({
   const [isCancelled, setCancelled] = useState<boolean>(false);
   const { setPanelValues } = useContext(PanelContext);
   const handleReserveMenuItem = async () => {
-    toast.promise(() => reserveMenuItemRequest(menuId!, mealTimeId!), {
-      pending: {
-        render() {
-          setisDisable(true);
-          return "در حال ثبت رزرو غذا";
+    toast.promise(
+      () => reserveMenuItemRequest<IPanelValues>(menuId!, mealTimeId!),
+      {
+        pending: {
+          render() {
+            setisDisable(true);
+            return "در حال ثبت رزرو غذا";
+          },
+        },
+        success: {
+          render(data) {
+            setisDisable(false);
+            setPanelValues(data.data?.data as IPanelValues);
+            return "رزرو غذا با موفقیت انجام شد";
+          },
+        },
+        error: {
+          render({ data }: any) {
+            setisDisable(false);
+            if (data.response.status === 422) {
+              return "موجودی کافی نمی باشد";
+            }
+            return wordBook.messages.errors.serverInternalError.fa;
+          },
         },
       },
-      success: {
-        render({ data: { data } }: { data: { data: IPanelValues } }) {
-          setisDisable(false);
-          setPanelValues(data);
-          return "رزرو غذا با موفقیت انجام شد";
-        },
-      },
-      error: {
-        render({ data }: any) {
-          setisDisable(false);
-          if (data.response.status === 422) {
-            return "موجودی کافی نمی باشد";
-          }
-          return wordBook.messages.errors.serverInternalError.fa;
-        },
-      },
-    });
+    );
   };
 
   const handleToggleShowBarcode = () => {
