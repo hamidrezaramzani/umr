@@ -91,7 +91,7 @@ const AddStudentPage = () => {
     if (userId) {
       fetchSingleStudent();
     }
-  }, [userId]);
+  }, [setValue, userId]);
   const navigate = useNavigate();
   const handleSubmitForm = async (values: AddStudentFormValues) => {
     try {

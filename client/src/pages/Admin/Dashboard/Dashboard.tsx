@@ -2,7 +2,7 @@ import AdminDashboardContainer from "../../../components/Admin/AdminDashboardCon
 
 const Dashboard = () => {
   return (
-    <AdminDashboardContainer>
+    <AdminDashboardContainer title="داشبورد">
       <h1>Hello World</h1>
     </AdminDashboardContainer>
   );

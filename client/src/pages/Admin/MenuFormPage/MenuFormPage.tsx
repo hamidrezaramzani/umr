@@ -9,7 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import AdminDashboardContainer from "../../../components/Admin/AdminDashboardContainer/AdminDashboardContainer";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { useEffect, useState } from "react";
@@ -130,11 +130,12 @@ const MenuFormPage = () => {
             calendarPosition="bottom-center"
             calendar={persian}
             locale={persian_fa}
-            onChange={([start, end]: any[]) => {
-              setValue("reservationDateRange", [
-                convertPersianNumberToEnglishNumber(String(start?.toString())),
-                convertPersianNumberToEnglishNumber(String(end?.toString())),
-              ]);
+            onChange={(datesArray: DateObject | DateObject[] | null) => {
+              const [start, end] = convertPersianNumberToEnglishNumber(
+                String(datesArray?.toString()),
+              ).split(",");
+
+              setValue("reservationDateRange", [start, end]);
             }}
           />
           <FormErrorMessage>

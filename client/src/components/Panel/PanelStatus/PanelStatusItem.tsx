@@ -34,7 +34,7 @@ interface PanelStatusItemProps {
   isReserved?: boolean;
   isTodayReserve?: boolean;
   reservationDateRange?: string[];
-  isForSale: boolean;
+  isForSale?: boolean;
   reserveId?: string;
 }
 const PanelStatusItem = ({
