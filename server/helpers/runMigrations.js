@@ -1,4 +1,5 @@
 const readline = require("readline");
+require("../database/connection");
 const runMigration = (migrationFunction) => {
   const rl = readline.createInterface({
     input: process.stdin,
