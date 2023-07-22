@@ -1,0 +1,5 @@
+{
+  "platform": "node",
+  "app": "umr-server",
+  "port": 5000
+}

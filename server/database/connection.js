@@ -9,9 +9,7 @@ const URI = !isProduction
   ? process.env.DEVELOPMENT_DB_URI
   : `mongodb+srv://hamidrezaramzani:${encodeURIComponent(
       process.env.DB_PASSWORD
-    )}@cluster0.wmowe.mongodb.net/${
-      process.env.DB_NAME
-    }?retryWrites=true&w=majority;`;
+    )}@cluster0.wmowe.mongodb.net/${process.env.DB_NAME}?retryWrites=true;`;
 mongoose.connect(URI).then((db) => {
   // eslint-disable-next-line no-console
   console.log("Database connected to " + db.connection.db.databaseName);
