@@ -1,7 +1,7 @@
 import { Button, HStack, VStack, Text } from "@chakra-ui/react";
 import { IUser } from "../../../pages/Panel/PanelPage";
 import PanelTransactionItem from "./PanelTransactionItem";
-import * as moment from "jalali-moment";
+import  moment from "jalali-moment";
 
 export interface ITransaction {
   _id: string;

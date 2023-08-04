@@ -19,7 +19,7 @@ import { UserContext } from "../../../context/UserProvider";
 import { getImageAddress } from "../../../helpers/getImageAddress";
 import { IExtraMeal } from "../../../pages/Admin/ManageExtraMeals/ManageExtraMeals";
 import PanelQRCode from "../PanelQRCode/PanelQRCode";
-import * as moment from "jalali-moment";
+import  moment from "jalali-moment";
 import { wordBook } from "../../../helpers/wordBook";
 import { TbShoppingCartOff, TbShoppingCartPlus } from "react-icons/tb";
 import PanelSalesModal from "../PanelSalesModal/PanelSalesModal";

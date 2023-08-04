@@ -10,7 +10,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import PanelStatusItem from "./PanelStatusItem";
-import * as moment from "jalali-moment";
+import  moment from "jalali-moment";
 import { IReserve } from "../../../pages/Panel/PanelPage";
 
 interface PanelStatusProps {

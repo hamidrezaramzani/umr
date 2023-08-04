@@ -17,7 +17,7 @@ import { HiOutlineChevronDown } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { addBalanceRequest } from "../../../api/students/students";
 import { IPanelValues, PanelContext } from "../../../context/PanelProvider";
-import * as moment from "jalali-moment";
+import  moment from "jalali-moment";
 const PanelCart = () => {
   const AVAILABLE_ACCOUNT_BALANCE_VALUES = [5000, 10000, 25000, 50000];
   const { setPanelValues, panelValues } = useContext(PanelContext);

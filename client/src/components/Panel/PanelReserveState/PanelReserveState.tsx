@@ -14,7 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
-import * as moment from "jalali-moment";
+import  moment from "jalali-moment";
 import { MdChevronRight } from "react-icons/md";
 import { IMealTime } from "../../../pages/Admin/ManageMealTimes/ManageMealTimesForm";
 import { IMenuItem, IReserve } from "../../../pages/Panel/PanelPage";

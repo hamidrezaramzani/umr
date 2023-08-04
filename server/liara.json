@@ -1,5 +1,11 @@
 {
   "platform": "node",
   "app": "umr-server",
-  "port": 5000
+  "port": 5000,
+  "disks": [
+    {
+      "name": "umr-disk",
+      "mountTo": "uploads"
+    }
+  ]
 }

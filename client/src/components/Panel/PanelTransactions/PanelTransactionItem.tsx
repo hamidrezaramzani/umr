@@ -3,7 +3,7 @@ import {
   MdOutlineAddShoppingCart,
   MdOutlineShoppingCartCheckout,
 } from "react-icons/md";
-import * as moment from "jalali-moment";
+import  moment from "jalali-moment";
 import { ITransaction } from "./PanelTransactions";
 
 const PanelTransactionItem = ({ type, date, value }: ITransaction) => {
