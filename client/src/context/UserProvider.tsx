@@ -27,9 +27,12 @@ type UserProviderProps = {
   children: React.ReactNode;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const STORAGE_NAME = "umr-user";
+
 export const UserProvider = ({ children }: UserProviderProps) => {
   let initialUser = null;
-  const storedUser = localStorage.getItem("umr-user");
+  const storedUser = localStorage.getItem(STORAGE_NAME);
   if (storedUser) {
     initialUser = {
       isLogged: true,
@@ -38,7 +41,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }
   const [user, setUser] = useState<User | null>(initialUser);
   const login = (user: UserInfo) => {
-    localStorage.setItem("umr-user", JSON.stringify(user));
+    localStorage.setItem(STORAGE_NAME, JSON.stringify(user));
     setUser({
       isLogged: true,
       user,
@@ -46,7 +49,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("umr-user");
+    localStorage.removeItem(STORAGE_NAME);
     setUser({
       isLogged: false,
       user: null,

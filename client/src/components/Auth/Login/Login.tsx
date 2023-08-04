@@ -59,13 +59,13 @@ const Login = () => {
   const handleSubmitForm = async (values: LoginFormValuesType) => {
     try {
       const { data } = await loginRequest(values);
-      toast.success("ورود به موفقیت انجام شد");
+      toast.success(wordBook.messages.success.logged.fa);
       login(data.user);
     } catch (error) {
       if ((error as AxiosError).response?.status === 401) {
-        toast.error("کد ملی و یا رمز عبور اشتباه است");
+        toast.error(wordBook.messages.errors.invalidMellicodeOrPassword.fa);
       } else {
-        toast.error("خطایی هنگام ورود به حساب رخ داده است. مجدد گزارش دهید");
+        toast.error(wordBook.messages.errors.serverInternalError.fa);
       }
     }
   };
@@ -73,26 +73,27 @@ const Login = () => {
     <Box width="50%">
       <form onSubmit={handleSubmit(handleSubmitForm)}>
         <Box>
-          <Heading color="linkedin.700">ورود به حساب</Heading>
+          <Heading color="linkedin.700">
+            {wordBook.titles.auth.signIn.fa}
+          </Heading>
           <Text color="gray.500">
-            با ورود به سامانه رزرو دانشجویی در سریع ترین حالت ممکن غذای مورد نظر
-            خود را رزرو کنید و غذاهایی که در گذشته رزرو کردید را مدیریت کنید
+            {wordBook.descriptions.auth.signInToAccount.fa}
           </Text>
         </Box>
         <FormControl mt="3" mb="3">
-          <FormLabel>کد ملی</FormLabel>
+          <FormLabel>{wordBook.fields.auth.meliCode.fa}</FormLabel>
           <Input type="text" {...register("meliCode")} name="meliCode" />
           <FormErrorMessage>{errors?.meliCode?.message}</FormErrorMessage>
         </FormControl>
 
         <FormControl>
-          <FormLabel>رمز عبور</FormLabel>
+          <FormLabel>{wordBook.fields.auth.password.fa}</FormLabel>
           <Input type="password" {...register("password")} name="password" />
           <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
         </FormControl>
 
         <Button colorScheme="blue" type="submit" mt="3" w="full">
-          ورود به حساب
+          {wordBook.button.auth.login.fa}
         </Button>
       </form>
     </Box>
