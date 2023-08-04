@@ -20,3 +20,8 @@ export const editMealRequest = async (values: FormData, mealId: string) => {
 export const getSingleMealRequest = async (mealId: string | undefined) => {
     return await client.get(`/meal/one/${mealId}`);
 }
+
+
+export const downloadCurrentWeekQrCodeRequest = async (week: number) => {
+    return await client.get(`/meal/download-qrcode/${week}`);
+}

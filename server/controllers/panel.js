@@ -18,7 +18,24 @@ const getPanelValues = async (req, res) => {
       .populate("mealTimes");
     const mealTimes = await MealTime.find({});
     const reserveds = await Reserve.find({ user: userId })
-      .populate("menu")
+      .populate({
+        path: "menu",
+        model: "Menu",
+        populate: [
+          {
+            path: "meal",
+            model: "Meal",
+          },
+          {
+            path: "mealTimes",
+            model: "MealTime",
+          },
+          {
+            path: "extraMeals",
+            model: "ExtraMeal",
+          },
+        ],
+      })
       .populate("user");
     const allReserves = await Reserve.find({
       user: userId,

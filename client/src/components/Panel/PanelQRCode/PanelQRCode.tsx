@@ -25,7 +25,7 @@ const PanelQRCode = ({ isOpen, onClose, id, userId }: PanelQRCodeProps) => {
         <ModalHeader>کیو آرکد</ModalHeader>
         <ModalBody>
           <VStack justify="center">
-            <QRCode value={`${userId}${id}`} />
+            <QRCode value={`${userId}${id}`} className="qr-code-current" />
             <Text>
               {userId}
               {id}

@@ -19,7 +19,7 @@ import { UserContext } from "../../../context/UserProvider";
 import { getImageAddress } from "../../../helpers/getImageAddress";
 import { IExtraMeal } from "../../../pages/Admin/ManageExtraMeals/ManageExtraMeals";
 import PanelQRCode from "../PanelQRCode/PanelQRCode";
-import  moment from "jalali-moment";
+import moment from "jalali-moment";
 import { wordBook } from "../../../helpers/wordBook";
 import { TbShoppingCartOff, TbShoppingCartPlus } from "react-icons/tb";
 import PanelSalesModal from "../PanelSalesModal/PanelSalesModal";
@@ -78,9 +78,11 @@ const PanelStatusItem = ({
           },
         },
         error: {
-          render({ data }: any) {
+          render({ data }) {
             setisDisable(false);
-            if (data.response.status === 422) {
+            if (
+              (data as { response: { status: number } }).response.status === 422
+            ) {
               return "موجودی کافی نمی باشد";
             }
             return wordBook.messages.errors.serverInternalError.fa;

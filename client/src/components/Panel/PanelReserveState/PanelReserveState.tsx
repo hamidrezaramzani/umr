@@ -14,7 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
-import  moment from "jalali-moment";
+import moment from "jalali-moment";
 import { MdChevronRight } from "react-icons/md";
 import { IMealTime } from "../../../pages/Admin/ManageMealTimes/ManageMealTimesForm";
 import { IMenuItem, IReserve } from "../../../pages/Panel/PanelPage";
@@ -22,6 +22,10 @@ import PanelReserveModal from "../PanelHeader/PanelReserveModal/PanelReserveModa
 import { useContext, useState } from "react";
 import { UserContext } from "../../../context/UserProvider";
 import { PanelContext } from "../../../context/PanelProvider";
+import QRCode from "react-qr-code";
+import JSZip from "jszip";
+import { toPng } from "html-to-image";
+import { saveAs } from "file-saver";
 interface PanelReserverStateProps {
   mealTimes?: IMealTime[];
   menus?: IMenuItem[];
@@ -71,6 +75,15 @@ const PanelReserveState = ({
             return menu;
           })
       : [];
+
+  const currentWeekStart = moment().locale("fa").startOf("week");
+  const currentWeekEnd = moment().locale("fa").endOf("week");
+
+  const currentWeekReserveds = panelValues?.reserveds?.filter((reserve) => {
+    const momentDate = moment(reserve.menu.date, "jYYYY/jMM/jDD");
+    const isBetween = momentDate.isBetween(currentWeekStart, currentWeekEnd);
+    return !reserve.isMovedToSale && isBetween;
+  });
 
   const handleAddToWeekIndex = () => {
     setWeekIndex((prevIndex) => (prevIndex += 1));
@@ -160,6 +173,37 @@ const PanelReserveState = ({
       </Tbody>
     );
   };
+
+  async function handleDownloadCurrentWeekQrCode() {
+    const zip = new JSZip();
+    const options = { quality: 0.95 }; // Adjust the quality as needed
+
+    if (!currentWeekReserveds?.length) {
+      return;
+    }
+    for (const [index, { menu }] of currentWeekReserveds.entries()) {
+      const svgElement = document.getElementById(`qrcode-${index}`);
+      const dataUrl = await toPng(
+        svgElement as unknown as HTMLElement,
+        options,
+      );
+      const imgData = dataUrl.split(",")[1];
+      zip.file(`${menu.date}-${menu.mealTimes?.title}.png`, imgData, {
+        base64: true,
+      });
+    }
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(
+        content,
+        `${currentWeekStart.format("jYYYY/jMM/jDD")}-${currentWeekEnd.format(
+          "jYYYY/jMM/jDD",
+        )}.zip`,
+      );
+    });
+  }
+
+  const isCurrentWeek = weekIndex === 0;
   return (
     <VStack
       // style={{ width: "100%" }}
@@ -175,6 +219,11 @@ const PanelReserveState = ({
           onClose={onClose}
           selectedMenuItems={selectedMenuItems}
         />
+        <div style={{ width: "0", height: "0", overflow: "hidden" }}>
+          {currentWeekReserveds?.map(({ menu, user }, index: number) => (
+            <QRCode value={`${user._id}${menu._id}`} id={`qrcode-${index}`} />
+          ))}
+        </div>
         <HStack justify="center">
           <Heading color="gray.700" fontSize="20" width="100%">
             وضعیت رزرو این هفته
@@ -201,6 +250,17 @@ const PanelReserveState = ({
             <MdChevronRight />
           </Button>
         </HStack>
+        {isCurrentWeek && (
+          <Button
+            my="3"
+            size="xs"
+            colorScheme="cyan"
+            onClick={handleDownloadCurrentWeekQrCode}
+          >
+            دانلود QRCODE های این هفته
+          </Button>
+        )}
+
         <Text mt="2" fontSize="14" color="gray.500">
           اینجا شما میتوانید وضعیت رزرو این هفته رو ببینید و همچنین برای این
           هفته رو رزرو کنید
