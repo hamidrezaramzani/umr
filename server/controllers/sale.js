@@ -160,8 +160,24 @@ const buySaleItem = async (req, res) => {
     );
 
     await Transaction.create({
-
+      date: new Date(),
+      value: salePrice,
+      user: userId,
+      type: "move",
     });
+
+    await Transaction.create({
+      date: new Date(),
+      value: salePrice,
+      user: sale.user._id,
+      type: "add",
+    });
+
+    await Notification.create({
+      user: sale.user._id,
+      message: "غذای شما به فروش رسید",
+    });
+
     return await getPanelValues(req, res);
   } catch (error) {
     return res.status(500).json(error);

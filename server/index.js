@@ -15,6 +15,7 @@ const menuRoutes = require("./routes/menu");
 const panelRoutes = require("./routes/panel");
 const reserveRoutes = require("./routes/reserve");
 const saleRoutes = require("./routes/sale");
+const notificationRoutes = require("./routes/notification");
 require("./database/connection");
 const start = () => {
   const app = express();
@@ -38,6 +39,7 @@ const start = () => {
   app.use("/api/v1/panel", panelRoutes);
   app.use("/api/v1/reserve", reserveRoutes);
   app.use("/api/v1/sale", saleRoutes);
+  app.use("/api/v1/notification", notificationRoutes);
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
     console.log("Server running at port ", PORT);

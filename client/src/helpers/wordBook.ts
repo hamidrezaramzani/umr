@@ -87,11 +87,11 @@ export const wordBook = {
   },
   titles: {
     auth: {
-        signIn: {
-            fa: "ورود به حساب", 
-            en: "Sign In"
-        }
-    }
+      signIn: {
+        fa: "ورود به حساب",
+        en: "Sign In",
+      },
+    },
   },
   descriptions: {
     auth: {
@@ -123,6 +123,22 @@ export const wordBook = {
         fa: "ورود با موفقیت انجام شد",
         en: "logged successfully",
       },
+      notification: {
+        readSuccessfully: {
+          fa: "اطلاع رسانی ها با موفقیت بارگذاری شد",
+          en: "Notifications load successfully",
+        },
+        seenNotification: {
+          fa: "اطلاع رسانی دیده شد",
+          en: "Notifications seen",
+        },
+      },
+    },
+  },
+  common: {
+    pending: {
+      fa: "لطفا صبر کنید",
+      en: "please wait",
     },
   },
   format: (name: string, message: string) => {
