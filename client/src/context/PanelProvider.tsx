@@ -4,6 +4,7 @@ import * as React from "react";
 import { ITransaction } from "../components/Panel/PanelTransactions/PanelTransactions";
 import { IMealTime } from "../pages/Admin/ManageMealTimes/ManageMealTimesForm";
 import { IMenuItem, IReserve, IUser } from "../pages/Panel/PanelPage";
+import { IMeal } from "../pages/Admin/ManageMeals/ManageMealsPage";
 
 export interface ISale {
   _id: string;
@@ -13,6 +14,7 @@ export interface ISale {
 export interface IPanelValues {
   user?: IUser;
   menus?: IMenuItem[];
+  meals?: IMeal[];
   mealTimes?: IMealTime[];
   reserveds?: IReserve[];
   todayReserves?: IReserve[];

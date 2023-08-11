@@ -1,6 +1,7 @@
 const path = require("path");
 const Meal = require("../models/Meal");
 const fs = require("fs/promises");
+const Vote = require("../models/Vote");
 const addMeal = async (req, res) => {
   try {
     const body = req.body;
@@ -14,7 +15,11 @@ const addMeal = async (req, res) => {
 
     body.image = fileName;
 
-    await Meal.create(body);
+    const meal = await Meal.create(body);
+    await Vote.create({
+      meal: meal._id,
+      voter: [],
+    });
     return res.status(201).json({
       message: "message added",
     });

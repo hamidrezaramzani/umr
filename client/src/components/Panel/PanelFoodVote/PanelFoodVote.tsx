@@ -1,5 +1,5 @@
-import { Button, HStack, Progress, Text, VStack } from "@chakra-ui/react";
-import { HiOutlineChevronDown } from "react-icons/hi";
+import { HStack, Progress, Text, VStack } from "@chakra-ui/react";
+
 const PanelFoodVote = () => {
   const renderFoodsForVote = () => {
     const foods = [
@@ -46,11 +46,7 @@ const PanelFoodVote = () => {
     <VStack bg="white" gap="5" rounded="md" p="5" width="100%">
       <VStack width="100%">
         <HStack justify="space-between" color="gray.600" width="100%">
-          <Text>نظرسنجی غذاها</Text>{" "}
-          <Button size="xs" colorScheme="blue">
-            ناهار &nbsp;
-            <HiOutlineChevronDown />
-          </Button>
+          <Text>نظرسنجی غذاها</Text>
         </HStack>
       </VStack>
       <VStack width="100%" gap="5">
@@ -58,7 +54,6 @@ const PanelFoodVote = () => {
           به غذاهای مورد نظر خودتون امتیاز بدید
         </Text>
         {renderFoodsForVote()}
-        <Button width="100%" colorScheme="blue" size="sm">تغییر رای</Button>
       </VStack>
     </VStack>
   );

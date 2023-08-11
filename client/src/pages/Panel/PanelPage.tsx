@@ -56,6 +56,7 @@ const PanelPage = () => {
       todayReserves,
       transactions,
       todaySales,
+      meals,
     },
     initialValues,
   } = useContext(PanelContext);
