@@ -92,7 +92,7 @@ const Notifications = () => {
                     ml="10px"
                     onClick={() => handleSeenNotification(notification._id)}
                   >
-                    <BiCheck fontSize={21} color="#fff" />
+                    <BiCheck fontSize={23} color="#fff" />
                   </Button>
                 </MenuItem>
               ))
