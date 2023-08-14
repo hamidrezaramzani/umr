@@ -109,6 +109,8 @@ const PanelStatusItem = ({
   const handelToggleShowSalesModal = () => {
     onOpenSalesModal();
   };
+
+  console.log("IsReserved, isForSale", isReserved, isForSale, menuId);
   return (
     <Tooltip label={type} hasArrow placement="top-start">
       <HStack

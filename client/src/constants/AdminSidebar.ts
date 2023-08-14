@@ -118,12 +118,6 @@ export const adminSidebarItems: AdminSidebarProps[] = [
     title: "حساب",
     childrens: [
       {
-        title: "تنظیمات",
-        link: "/admin/settings",
-        name: "settings",
-        Icon: RiUser2Fill,
-      },
-      {
         title: "خروج",
         link: "/logout",
         name: "manage-menu",

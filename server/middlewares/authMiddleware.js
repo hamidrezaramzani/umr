@@ -11,7 +11,6 @@ function authMiddleware(userType) {
 
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(payload);
       if (payload.type !== userType) {
         res.status(403).json({ error: "Forbidden" });
         return;

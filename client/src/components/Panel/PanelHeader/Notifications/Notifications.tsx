@@ -1,14 +1,15 @@
 import {
   HStack,
-  Badge,
   Box,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Portal,
+  Text,
+  IconButton,
+  Button,
 } from "@chakra-ui/react";
-import { BiBell } from "react-icons/bi";
+import { BiBell, BiCheck } from "react-icons/bi";
 import { IUser } from "../../../../pages/Panel/PanelPage";
 import { useEffect, useState } from "react";
 import {
@@ -30,7 +31,6 @@ const Notifications = () => {
   >([]);
   useEffect(() => {
     const fetchNotifications = async () => {
-      console.log("Notification Request");
       toast.promise(() => getUserNotificationsRequest<INotification[]>(), {
         pending: wordBook.common.pending.fa,
         error: wordBook.messages.errors.serverInternalError.fa,
@@ -67,25 +67,38 @@ const Notifications = () => {
   };
   return (
     <HStack>
-      <Box mx="2"></Box>
       <Menu>
-        <MenuButton>
-          <Badge ml="1" fontSize="0.8em" colorScheme="red">
-            {notifications?.length}
-          </Badge>
-          <BiBell fontSize="28" color="#fff" />
-        </MenuButton>
-        <Portal>
-          <MenuList zIndex={999999}>
-            {notifications?.map((notification) => (
-              <MenuItem
-                onClick={() => handleSeenNotification(notification._id)}
-              >
-                {notification.message}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Portal>
+        <MenuButton
+          as={IconButton}
+          icon={<BiBell fontSize={35} />}
+          size="md"
+          variant="ghost"
+          colorScheme="whiteAlpha"
+        />
+        <MenuList minWidth="220px">
+          <Box p={2} fontSize="sm">
+            <Text fontWeight="bold" mb={2}>
+              اطلاع رسانی ها
+            </Text>
+            {notifications?.length === 0 ? (
+              <Text color="gray.500">اطلاع رسانی جدیدی وجود ندارد</Text>
+            ) : (
+              notifications?.map((notification) => (
+                <MenuItem key={notification.message} fontSize="sm">
+                  {notification.message}{" "}
+                  <Button
+                    size="sm"
+                    colorScheme="blue"
+                    ml="10px"
+                    onClick={() => handleSeenNotification(notification._id)}
+                  >
+                    <BiCheck fontSize={21} color="#fff" />
+                  </Button>
+                </MenuItem>
+              ))
+            )}
+          </Box>
+        </MenuList>
       </Menu>
     </HStack>
   );
